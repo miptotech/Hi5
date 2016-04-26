@@ -1,0 +1,6 @@
+{
+  "name": "Hi5",
+  "dependencies": {
+    "ionic": "~1.2.4"
+  }
+}
