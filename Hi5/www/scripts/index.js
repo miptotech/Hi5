@@ -30,8 +30,10 @@
 (function () {
     'use strict';
 
-    angular.module('Hi5', ['Hi5.services', 'Hi5.controllers', 'Hi5.directives', 'ionic']);
-    angular.module('Hi5.directives', []);
-    angular.module('Hi5.controllers', ['ionic']);
-    angular.module('Hi5.services', []);
+    angular.module('Hi5', ['ionic']);
+
+    //angular.module('Hi5', ['Hi5.services', 'Hi5.controllers', 'Hi5.directives', 'ionic']);
+    //angular.module('Hi5.directives', []);
+    //angular.module('Hi5.controllers', ['ionic']);
+    //angular.module('Hi5.services', []);
 })();
