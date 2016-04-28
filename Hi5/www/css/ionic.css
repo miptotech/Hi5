@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 /*!
  * Copyright 2015 Drifty Co.
  * http://drifty.com/
@@ -3063,7 +3063,9 @@ html {
  */
 body {
   margin: 0;
-  line-height: 1; }
+  line-height: 1;
+  background: #3ab5f3;
+}
 
 /**
  * Remove default outlines.
@@ -3559,7 +3561,7 @@ ion-infinite-scroll {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #fff;
+  background-color: #3ab5f3;
   overflow: hidden; }
 
 .view-container {
@@ -3888,7 +3890,7 @@ a.subdued {
   border-width: 0;
   border-style: solid;
   border-top: 1px solid transparent;
-  border-bottom: 1px solid #ddd;
+  /*border-bottom: 1px solid #ddd;*/
   background-color: white;
   /* border-width: 1px will actually create 2 device pixels on retina */
   /* this nifty trick sets an actual 1px border on hi-res displays */
@@ -3916,16 +3918,15 @@ a.subdued {
       height: 28px;
       background: transparent; }
   .bar.bar-light {
-    border-color: #ddd;
-    background-color: white;
-    background-image: linear-gradient(0deg, #ddd, #ddd 50%, transparent 50%);
-    color: #444; }
+    background-color: #3ab5f3;
+    /*background-image: linear-gradient(0deg, #ddd, #ddd 50%, transparent 50%);*/
+    color: #fff; }
     .bar.bar-light .title {
-      color: #444; }
+      color: #fff; }
     .bar.bar-light.bar-footer {
       background-image: linear-gradient(180deg, #ddd, #ddd 50%, transparent 50%); }
   .bar.bar-stable {
-    border-color: #b2b2b2;
+    /*border-color: #b2b2b2;*/
     background-color: #f8f8f8;
     background-image: linear-gradient(0deg, #b2b2b2, #b2b2b2 50%, transparent 50%);
     color: #444; }
@@ -4269,7 +4270,7 @@ a.subdued {
 .bar-header {
   top: 0;
   border-top-width: 0;
-  border-bottom-width: 1px; }
+  /*border-bottom-width: 1px;*/ }
   .bar-header.has-tabs-top {
     border-bottom-width: 0px;
     background-image: none; }
@@ -5221,7 +5222,7 @@ ion-tabs.tabs-color-active-dark .tab-item {
   min-height: 100%;
   max-height: 100%;
   width: 275px;
-  background-color: #fff; }
+  background-color: #3ab5f3; }
   .menu .scroll-content {
     z-index: 10; }
   .menu .bar-header {
@@ -7507,7 +7508,11 @@ textarea {
   align-items: center;
   position: relative;
   overflow: hidden;
-  padding: 6px 0 5px 16px; }
+  padding: 6px 0 5px 16px;
+  background-color: #3ab4f3;
+  color:#fff;
+  border: none;
+}
   .item-input input {
     -webkit-border-radius: 0;
     border-radius: 0;
@@ -7607,8 +7612,10 @@ textarea {
   padding: 7px 10px 7px 0px;
   max-width: 200px;
   width: 35%;
-  color: #444;
-  font-size: 16px; }
+  color: #bae8ff;
+  font-size: 16px;
+  font-weight: 100;
+}
 
 .placeholder-icon {
   color: #aaa; }
@@ -7620,7 +7627,10 @@ textarea {
 .item-stacked-label {
   display: block;
   background-color: transparent;
-  box-shadow: none; }
+  box-shadow: none;
+  padding-bottom: 0px;
+  padding-top: 0px;
+}
   .item-stacked-label .input-label, .item-stacked-label .icon {
     display: inline-block;
     padding: 4px 0 0 0px;
@@ -7632,7 +7642,8 @@ textarea {
   border-radius: 2px;
   padding: 4px 8px 3px 0;
   border: none;
-  background-color: #fff; }
+  background-color: #fff;
+}
 
 .item-stacked-label input {
   overflow: hidden;
@@ -7682,7 +7693,7 @@ input[type="color"] {
   padding-top: 2px;
   padding-left: 0;
   height: 34px;
-  color: #111;
+  color: #fff;
   vertical-align: middle;
   font-size: 14px;
   line-height: 16px; }
@@ -8568,6 +8579,7 @@ progress {
     margin-bottom: 10px; }
   .button.button-light {
     border-color: transparent;
+    border-radius: 22px;
     background-color: #fff;
     color: #444; }
     .button.button-light:hover {
@@ -8884,8 +8896,9 @@ button.button-block,
 button.button-full,
 .button-full > button.button,
 input.button.button-block {
-  width: 100%; }
-
+  width: 80%;
+  margin: 0 auto;
+}
 a.button {
   text-decoration: none; }
   a.button .icon:before, a.button.icon:before, a.button.icon-left:before, a.button.icon-right:before {
@@ -9727,3 +9740,111 @@ a.button {
   opacity: 0;
   -webkit-transition-duration: 0s;
   transition-duration: 0s; }
+.background-index{
+    background-image:url(../images/../images/background.png);
+    background-repeat: repeat-x;
+    background-size: contain;
+}
+.top-text{
+    margin: 1rem;
+    padding: 1rem;
+    /* IMPORTANTE */
+    text-align: center;
+}
+.top-text h3{
+    color:#fff;
+}
+.upper-space{
+    margin-top:140px; 
+}
+.upper-space2{
+    margin: 1rem;
+    padding: 1rem;
+    /* IMPORTANTE */
+    text-align: center;
+    padding-bottom:0px;
+}
+.logo{
+    margin: 1rem;
+    padding: 1rem;
+    /* IMPORTANTE */
+    text-align: center;
+    margin-top:0px;
+    padding-bottom: 0px;
+}
+#logo{
+    margin-top: 50px;
+}
+.registro{
+    color: #fff;
+    padding: 1em 3em;
+    margin: 1em 10%;
+    padding-top:0px;
+}
+.registro a{
+    cursor:pointer;
+    text-decoration:none;
+    color:#fff;
+}
+.login{
+    color: #fff;
+    padding: 1em 3em;
+    margin: 1em 10%;
+    padding-top:0px;
+}
+.login a{
+    cursor:pointer;
+    text-decoration:none;
+    color:#fff;
+}
+.login-btn{
+    color:#006699;
+    font-weight:bold;
+}
+.logo-hi5{
+    color:#fff;
+    font-size: 22px;
+    text-align: center;
+    padding-top: 10px;
+    margin-bottom: 30px;
+}
+.login-content{
+    margin: 1rem;
+    padding: 1rem;
+    /* IMPORTANTE */
+    text-align: center;
+    padding-top: 0px;
+    padding-bottom: 0px;
+}
+.reg-btn{
+    color:#006699;
+    font-weight:bold;
+}
+#reg-btn{
+    margin-top: 50px;
+}
+.register-content{
+    margin: 1rem;
+    padding: 1rem;
+    /* IMPORTANTE */
+    text-align: center;
+    margin-top: 0px;
+    padding-bottom: 0px;
+}
+/* all */
+::-webkit-input-placeholder { color:#fff; font-weight:bold; text-align:center; margin: 1rem; padding: 1rem; }
+::-moz-placeholder { color:#fff; font-weight:bold; text-align:center; margin: 1rem; padding: 1rem; } /* firefox 19+ */
+:-ms-input-placeholder { color:#fff; font-weight:bold; text-align:center; margin: 1rem; padding: 1rem; } /* ie */
+input:-moz-placeholder { color:#fff; font-weight:bold; text-align:center; margin: 1rem; padding: 1rem; }
+
+/* individual: webkit */
+#login-field::-webkit-input-placeholder { color:#fff; font-weight:bold; text-align:center; margin: 1rem; padding: 1rem; }
+#reg-field::-webkit-input-placeholder { color:#fff; font-weight:bold; text-align:center; margin: 1rem; padding: 1rem; }
+/* individual: mozilla */
+#login-field2::-moz-placeholder { color:#fff; font-weight:bold; text-align:center; margin: 1rem; padding: 1rem; }
+#reg-field::-webkit-input-placeholder { color:#fff; font-weight:bold; text-align:center; margin: 1rem; padding: 1rem; }
+#reg-field{
+    background-color: #3ab4f3;
+    color:#fff;
+    border: none;
+}

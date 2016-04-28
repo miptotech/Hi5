@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -49,27 +49,28 @@
 
         <!-- Center content -->
         <ion-side-menu-content>
-            <ion-header-bar class="bar-dark">
-                <button class="button button-icon" ng-click="toggleProjects()">
-                    <i class="icon ion-navicon"></i>
-                </button>
-                <h1 class="title">{{activeProject.title}}</h1>
-                <!-- New Task button-->
-                <button class="button button-icon" ng-click="newTask()">
-                    <i class="icon ion-compose"></i>
-                </button>
-            </ion-header-bar>
+            <div class="top-text">
+                <h3 class="">Welcome to Hi5!</h3>
+            </div>
             <ion-content scroll="false">
-                <ion-list>
-                    <ion-item ng-repeat="task in activeProject.tasks">
-                        {{task.title}}
-                    </ion-item>
-                </ion-list>
+                <div class="upper-space">
+                    <div class="logo">
+                        <img src="images/logo.png" width="200" height="230" alt="logo" />
+                    </div>
+                </div>
+                <div class="upper-space2">
+                    <a href="login.html" class="button button-block button-light">
+                        <span class="login-btn">Log In</span>
+                    </a>
+                </div>
+                <div class="login">
+                    <p>Don't have an account? <a href="register.html"><b>Register</b></a></p>
+                </div>
             </ion-content>
         </ion-side-menu-content>
 
         <!-- Left menu -->
-        <ion-side-menu side="left">
+        <!--<ion-side-menu side="left">
             <ion-header-bar class="bar-dark">
                 <h1 class="title">Projects</h1>
                 <button class="button button-icon ion-plus" ng-click="newProject()"></button>
@@ -81,7 +82,7 @@
                     </ion-item>
                 </ion-list>
             </ion-content>
-        </ion-side-menu>
+        </ion-side-menu>-->
 
     </ion-side-menus>
 </body>
