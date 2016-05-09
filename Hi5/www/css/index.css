@@ -28,7 +28,7 @@ body {
     text-transform: uppercase;
     background-color: #696969;
     animation: fade 3000ms infinite;
-    -webkit-animation: fade 3000ms infinite;
+    -webkit-animation: fade 3000ms infinit;te
 }
 
 .ready {

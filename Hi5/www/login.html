@@ -13,34 +13,36 @@
     <!-- Needed for Cordova/PhoneGap (will be a 404 during development) -->
     <script src="cordova.js"></script>
 </head>
-<body>
-    <!-- Center content -->
-    <ion-side-menu-content>
-        <ion-content scroll="false">
-            <div class="background-index">
-                <div class="logo">
-                    <img src="images/logo.png" id="logo" width="200" height="230" alt="logo" />
+<body ng-app="todo" ng-controller="TodoCtrl">
+    <ion-side-menus>
+        <!-- Center content -->
+        <ion-side-menu-content>
+            <ion-content scroll="false">
+                <div class="background-index">
+                    <div class="logo">
+                        <img src="images/logo.png" id="logo" width="200" height="230" alt="logo" />
+                    </div>
                 </div>
-            </div>
-            <div class="login-content">
-                <div class="list">
-                    <h2 class="logo-hi5">Hi-5!</h2>
-                    <label class="item item-input">
-                        <input id="login-field" type="text" placeholder="Username">
-                    </label>
-                    <label class="item item-input">
-                        <input id="login-field" type="text" placeholder="Password">
-                    </label>
-                    <a href="login.html" class="button button-block button-light">
-                        <span class="login-btn">Log In</span>
-                    </a>
-                    <img src="images/facebook_btn.png" alt="Alternate Text" width="148" height="48" /><img src="images/google_btn.png" alt="Alternate Text" width="148" height="48" />
+                <div class="login-content">
+                    <div class="list">
+                        <h2 class="logo-hi5">Hi-5!</h2>
+                        <label class="item item-input">
+                            <input style="text-align:center" id="login-field" type="text" placeholder="Username">
+                        </label>
+                        <label class="item item-input">
+                            <input style="text-align:center" id="login-field" type="password" placeholder="Password">
+                        </label>
+                        <a href="#" ng-click="login()" class="button button-block button-light">
+                            <span class="login-btn">Log In</span>
+                        </a>
+                        <img src="images/facebook_btn.png" alt="Alternate Text" width="148" height="48" /><img src="images/google_btn.png" alt="Alternate Text" width="148" height="48" />
+                    </div>
                 </div>
-            </div>
-            <div class="login">
-                <p>Don't have an account? <a href="register.html"><b>Register</b></a></p>
-            </div>
-        </ion-content>
-    </ion-side-menu-content>
+                <div class="login">
+                    <p>Don't have an account? <a href="register.html"><b>Register</b></a></p>
+                </div>
+            </ion-content>
+        </ion-side-menu-content>
+    </ion-side-menus>
 </body>
 </html>
