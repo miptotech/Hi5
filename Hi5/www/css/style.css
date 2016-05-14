@@ -1,0 +1,67 @@
+/* Styles go here */
+.prueba{
+    background:#49545a;
+    color:#fff;
+}
+item item-complex {
+    border: none;
+    background-color: #49545a;
+}
+.iconos{
+   background:#49545a;
+   border:0;
+}
+.iconos span{
+   color:#fff;
+   margin-left:5px;
+}
+.item{
+    border:0;
+}
+.item-complex .item-content, .item-radio .item-content{
+    background-color:#49545a;
+    border:0;
+    padding:0;
+    padding-left:10px;
+}
+#header-menu{color:#fff;}
+.bar-header{border:0;}
+.logo-perfil-usr{
+    padding: 1rem;
+    /* IMPORTANTE */
+    text-align: center;
+}
+.logo-perfil-usr img{
+    margin-top:50px;
+}
+.logo-perfil{
+    margin: 1rem;
+    padding: 1rem;
+    /* IMPORTANTE */
+    text-align: center;
+}
+.logo-perfil img {
+    margin-top: 50px;
+}
+.perfil-nombre {
+    color: #fff;
+}
+.perfil-usuario {
+    color: #000;
+}
+.perfil-email {
+    color: #3bb7f5;
+}
+#content-wall{
+    background:#3ab4f3;
+}
+
+.bar-header{
+    background:#3ab4f3;
+}
+.groups-title{
+    margin: 1rem;
+    padding: 1rem;
+    /* IMPORTANTE */
+    text-align: center;
+}

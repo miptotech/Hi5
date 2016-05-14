@@ -1,45 +1,84 @@
-﻿(function () {
-    "use strict";
+// Ionic Starter App, v0.9.20
 
-    document.addEventListener( 'deviceready', onDeviceReady.bind( this ), false );
+// angular.module is a global place for creating, registering and retrieving Angular modules
+// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
+// the 2nd parameter is an array of 'requires'
+// 'starter.services' is found in services.js
+// 'starter.controllers' is found in controllers.js
+angular.module('starter', ['ionic', 'starter.controllers'])
 
-    function onDeviceReady() {
-        // Handle the Cordova pause and resume events
-        document.addEventListener( 'pause', onPause.bind( this ), false );
-        document.addEventListener( 'resume', onResume.bind( this ), false );
+.run(function($ionicPlatform) {
+  $ionicPlatform.ready(function() {
+    if(window.StatusBar) {
+      StatusBar.styleDefault();
+    }
+  });
+})
 
-        // TODO: Cordova has been loaded. Perform any initialization that requires Cordova here.
-        //var element = document.getElementById("deviceready");
-        //element.innerHTML = 'Device Ready';
-        //element.className += ' ready';
-    };
+.config(function($ionicConfigProvider, $stateProvider, $urlRouterProvider) {
+  
+    // $ionicConfigProvider.views.maxCache(10);
+    $ionicConfigProvider.views.transition('platform');
+    // $ionicConfigProvider.views.forwardCache(false);
+    $ionicConfigProvider.backButton.icon('ion-ios-arrow-back');
+    $ionicConfigProvider.backButton.text('');                  // default is 'Back'
+    $ionicConfigProvider.backButton.previousTitleText(false);  // hides the 'Back' text
+    // $ionicConfigProvider.templates.maxPrefetch(20);
+  
+    $stateProvider
 
-    function onPause() {
-        // TODO: This application has been suspended. Save application state here.
-    };
+      .state('app', {
+          url: "/app",
+          abstract: true,
+          templateUrl: "menu.html",
+          controller: 'AppCtrl'
+      })
 
-    function onResume() {
-        // TODO: This application has been reactivated. Restore application state here.
-    };
-} )();
+      .state('app.search', {
+          url: "/search",
+          views: {
+              'menuContent': {
+                  templateUrl: "search.html"
+              }
+          }
+      })
 
+      .state('app.browse', {
+          url: "/browse",
+          views: {
+              'menuContent': {
+                  templateUrl: "browse.html"
+              }
+          }
+      })
+      .state('app.playlists', {
+          url: "/playlists",
+          views: {
+              'menuContent': {
+                  templateUrl: "playlists.html",
+                  controller: 'PlaylistsCtrl'
+              }
+          }
+      })
 
-angular.module('todo', ['ionic'])
+      .state('app.single', {
+          url: "/playlists/:playlistId",
+          views: {
+              'menuContent': {
+                  templateUrl: "playlist.html",
+                  controller: 'PlaylistCtrl'
+              }
+          }
+      })
 
-.controller('TodoCtrl', function ($scope) {
-
-
-    $scope.login = function () {
-        //alert("pase");
-        //var mobileAppsClient = new WindowsAzure.MobileServiceClient(
-        //        "http://localhost:50773/"
-        //    );
-
-        //var item = { test: 'Item 1', complete: false };
-        //mobileAppsClient.getTable('todoitem').insert(item);
-
-        //var todoTable = mobileAppsClient.getTable('TodoItem');
-        //console.log(todoTable);
-    };
-
+    .state('app.groups', {
+        url: "/groups",
+        views: {
+            'menuContent': {
+                templateUrl: "groups.html"
+            }
+        }
+    });
+  // if none of the above states are matched, use this as the fallback
+  $urlRouterProvider.otherwise('/app/playlists');
 });
