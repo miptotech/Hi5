@@ -1,7 +1,7 @@
 ﻿(function () {
     'use strict';
 
-    angular.module('starter', ['ionic'])
+    angular.module('starter', ['ionic']) //
 
     .controller('LoginCtrl', function ($scope, $ionicPopup) {
         //$scope.tasks = [

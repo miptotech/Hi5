@@ -15,7 +15,7 @@ angular.module('starter', ['ionic', 'starter.controllers'])
   });
 })
 
-.config(function($ionicConfigProvider, $stateProvider, $urlRouterProvider) {
+.config(function($ionicConfigProvider, $stateProvider, $urlRouterProvider) { //Modified
   
     // $ionicConfigProvider.views.maxCache(10);
     $ionicConfigProvider.views.transition('platform');
