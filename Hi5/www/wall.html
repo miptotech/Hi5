@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Wall</title>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <link href="css/ionic.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <script src="scripts/libs/ionic.bundle.js"></script>
+    <script src="scripts/app.js"></script>
+    <!-- Needed for Cordova/PhoneGap (will be a 404 during development) -->
+    <script src="cordova.js"></script>
+    <script src="controllers.js"></script>
+</head>
+<body ng-app="" ng-controller="">
+    <ion-side-menus>
+        <div class="bar bar-header" style="background: #3ab4f3;">
+            <button style="color:#fff;" class="button button-icon icon ion-navicon"></button>
+            <div class="h1 title" style="padding:2px 6px 0 0;">
+                <img src="images/Logo_sm.png" id="logo2" width="16" height="16" alt="logo" />
+            </div>
+            <button class="button button-clear button-positive" style="padding:2px 6px 0 0;">
+                <img src="images/Edit.png" id="edit" width="16" height="16" alt="edit" />
+            </button>
+        </div>
+        <ion-side-menu side="left">
+            menu a la izquierda
+        </ion-side-menu>
+
+        <ion-side-menu-content>
+            <ion-nav-view>
+                <div class="list card">
+                    <div class="item item-avatar">
+                        <img src="images/User.png">
+                        <h2>Marty McFly</h2>
+                        <p>November 05, 1955</p>
+                    </div>
+
+                    <div class="item item-body">
+                        <img class="full-image" src="delorean.jpg">
+                        <p>
+                            This is a "Facebook" styled Card. The header is created from a Thumbnail List item,
+                            the content is from a card-body consisting of an image and paragraph text. The footer
+                            consists of tabs, icons aligned left, within the card-footer.
+                        </p>
+                        <p>
+                            <a href="#" class="subdued">1 Like</a>
+                            <a href="#" class="subdued">5 Comments</a>
+                        </p>
+                    </div>
+
+                </div>
+
+                <div class="card">
+                    <div class="item item-divider">
+                        <div class="list">
+
+                            <a class="item item-avatar" href="#">
+                                <img src="images/User.png">
+                                <h2>Venkman</h2>
+                                <p>Back off, man. I'm a scientist.</p>
+                            </a>
+
+                            ...
+
+                        </div>
+                    </div>
+                    <div class="item item-text-wrap">
+                        This is a basic Card with some text.
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="item item-text-wrap">
+                        <div class="list">
+
+                            <a class="item item-avatar" href="#">
+                                <img src="images/User.png">
+                                <h2>Venkman</h2>
+                                <p>Back off, man. I'm a scientist.</p>
+                            </a>
+
+                            ...
+
+                        </div>
+                    </div>
+                    <div class="item item-divider">
+                        I'm a Footer in a Card!
+                    </div>
+                </div> 
+            </ion-nav-view>
+        </ion-side-menu-content>
+    </ion-side-menus>
+</body>
+</html>

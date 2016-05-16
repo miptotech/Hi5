@@ -9,11 +9,12 @@
 
     <script src="scripts/libs/ionic.bundle.js"></script>
     <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/LoginCtrl.js"></script>
 
     <!-- Needed for Cordova/PhoneGap (will be a 404 during development) -->
     <script src="cordova.js"></script>
 </head>
-<body ng-app="todo" ng-controller="TodoCtrl">
+<body ng-app="starter" ng-controller="LoginCtrl">
     <ion-side-menus>
         <!-- Center content -->
         <ion-side-menu-content>
@@ -27,12 +28,12 @@
                     <div class="list">
                         <h2 class="logo-hi5">Hi-5!</h2>
                         <label class="item item-input">
-                            <input style="text-align:center" id="login-field" type="text" placeholder="Username">
+                            <input ng-model="auth.username" style="text-align:center" id="login-field" type="text" placeholder="Username">
                         </label>
                         <label class="item item-input">
                             <input style="text-align:center" id="login-field" type="password" placeholder="Password">
                         </label>
-                        <a href="#" ng-click="login()" class="button button-block button-light">
+                        <a href="javascript:void(0)" ng-click="login()" class="button button-block button-light">
                             <span class="login-btn">Log In</span>
                         </a>
                         <img src="images/facebook_btn.png" alt="Alternate Text" width="148" height="48" /><img src="images/google_btn.png" alt="Alternate Text" width="148" height="48" />

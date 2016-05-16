@@ -9,46 +9,49 @@
 
     <script src="scripts/libs/ionic.bundle.js"></script>
     <script src="scripts/app.js"></script>
+    <script src="scripts/controllers/LoginCtrl.js"></script>
 
     <!-- Needed for Cordova/PhoneGap (will be a 404 during development) -->
     <script src="cordova.js"></script>
 </head>
-<body>
-    <!-- Center content -->
-    <ion-side-menu-content>
-        <ion-content scroll="false">
-            <div class="background-index">
-                <div class="register-content">
-                    <div class="list">
-                        <h2 class="logo-hi5">Register</h2>
-                        <label class="item item-input item-stacked-label">
-                            <span class="input-label">Username</span>
-                            <input style="text-align:center" id="reg-field" type="text" placeholder="Type a Username">
-                        </label>
-                        <label class="item item-input item-stacked-label">
-                            <span class="input-label">Email Address</span>
-                            <input style="text-align:center" id="reg-field" type="text" placeholder="Type a Email Address">
-                        </label>
-                        <label class="item item-input item-stacked-label">
-                            <span class="input-label">Password</span>
-                            <input style="text-align:center" id="reg-field" type="password" placeholder="Type a Password">
-                        </label>
-                        <label class="item item-input item-stacked-label">
-                            <span class="input-label">Confirm Password</span>
-                            <input style="text-align:center" id="reg-field" type="password" placeholder="Confirm your Password">
-                        </label>
-                        <a href="login.html" class="button button-block button-light" id="reg-btn">
-                            <span class="reg-btn">Sign In</span>
-                        </a>
-                        <img src="images/facebook_btn.png" alt="Alternate Text" width="148" height="48" /><img src="images/google_btn.png" alt="Alternate Text" width="148" height="48" />
+<body ng-app="starter" ng-controller="LoginCtrl">
+    <ion-side-menus>
+        <!-- Center content -->
+        <ion-side-menu-content>
+            <ion-content scroll="false">
+                <div class="background-index">
+                    <div class="register-content">
+                        <div class="list">
+                            <h2 class="logo-hi5">Register</h2>
+                            <label class="item item-input item-stacked-label">
+                                <span class="input-label">Username</span>
+                                <input style="text-align:center" id="reg-field" type="text" placeholder="Type a Username">
+                            </label>
+                            <label class="item item-input item-stacked-label">
+                                <span class="input-label">Email Address</span>
+                                <input style="text-align:center" id="reg-field" type="text" placeholder="Type a Email Address">
+                            </label>
+                            <label class="item item-input item-stacked-label">
+                                <span class="input-label">Password</span>
+                                <input style="text-align:center" id="reg-field" type="password" placeholder="Type a Password">
+                            </label>
+                            <label class="item item-input item-stacked-label">
+                                <span class="input-label">Confirm Password</span>
+                                <input style="text-align:center" id="reg-field" type="password" placeholder="Confirm your Password">
+                            </label>
+                            <a href="#" ng-click="register()" class="button button-block button-light" id="reg-btn">
+                                <span class="reg-btn">Sign In</span>
+                            </a>
+                            <img src="images/facebook_btn.png" alt="Alternate Text" width="148" height="48" /><img src="images/google_btn.png" alt="Alternate Text" width="148" height="48" />
+                        </div>
+                    </div>
+                    <div class="registro">
+                        <p>Already have an account? <a href="login.html"><b>Log In</b></a></p>
                     </div>
                 </div>
-                <div class="registro">
-                    <p>Already have an account? <a href="login.html"><b>Log In</b></a></p>
-                </div>
-            </div>
 
-        </ion-content>
-    </ion-side-menu-content>
+            </ion-content>
+        </ion-side-menu-content>
+    </ion-side-menus>
 </body>
 </html>
