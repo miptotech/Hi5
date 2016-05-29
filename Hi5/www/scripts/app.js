@@ -1,84 +1,128 @@
-// Ionic Starter App, v0.9.20
 
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-// 'starter.services' is found in services.js
-// 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers'])
+angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-storage', 'angular-jwt'])
 
-.run(function($ionicPlatform) {
-  $ionicPlatform.ready(function() {
-    if(window.StatusBar) {
-      StatusBar.styleDefault();
-    }
-  });
+.run(function ($ionicPlatform) {
+    $ionicPlatform.ready(function () {
+        if (window.StatusBar) {
+            StatusBar.styleDefault();
+        }
+    });
 })
 
-.config(function($ionicConfigProvider, $stateProvider, $urlRouterProvider) {
-  
-    // $ionicConfigProvider.views.maxCache(10);
-    $ionicConfigProvider.views.transition('platform');
-    // $ionicConfigProvider.views.forwardCache(false);
-    $ionicConfigProvider.backButton.icon('ion-ios-arrow-back');
-    $ionicConfigProvider.backButton.text('');                  // default is 'Back'
-    $ionicConfigProvider.backButton.previousTitleText(false);  // hides the 'Back' text
-    // $ionicConfigProvider.templates.maxPrefetch(20);
-  
+.config(function ($stateProvider, $urlRouterProvider, authProvider, jwtInterceptorProvider, $httpProvider) {
     $stateProvider
+        .state('init', {
+            url: "/init",
+            templateUrl: "templates/init.html"
+        })
+        .state('login', {
+            url: "/login",
+            templateUrl: "templates/login.html",
+            controller: 'LoginCtrl'
+        })
+        .state('app', {
+            url: "/app",
+            abstract: true,
+            templateUrl: "templates/app.html",
+            controller: 'AppCtrl',
+            data: {
+                requiresLogin: true
+            }
+        })
+        .state('app.wall', {
+            url: '/wall',
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/wall.html",
+                    controller: 'WallCtrl'
+                }
+            }
+        })
+        .state('app.profile', {
+            url: '/profile',
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/profile.html",
+                    controller: 'ProfileCtrl'
+                }
+            }
+        })
+        .state('app.groups', {
+            url: '/groups',
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/groups.html",
+                    controller: 'GroupCtrl'
+                }
+            }
+        });
+    // if none of the above states are matched, use this as the fallback
+    //$urlRouterProvider.otherwise('/init');
+    $urlRouterProvider.otherwise('/app/wall');
 
-      .state('app', {
-          url: "/app",
-          abstract: true,
-          templateUrl: "menu.html",
-          controller: 'AppCtrl'
-      })
+    // Configure Auth0
+    authProvider.init({
+        domain: AUTH0_DOMAIN,
+        clientID: AUTH0_CLIENT_ID,
+        callbackURL: AUTH0_CALLBACK_URL,
+        loginState: 'login'
+    });
 
-      .state('app.search', {
-          url: "/search",
-          views: {
-              'menuContent': {
-                  templateUrl: "search.html"
-              }
-          }
-      })
+    jwtInterceptorProvider.tokenGetter = function (store, jwtHelper, auth) {
+        var idToken = store.get('token');
+        var refreshToken = store.get('refreshToken');
+        if (!idToken || !refreshToken) {
+            return null;
+        }
+        if (jwtHelper.isTokenExpired(idToken)) {
+            return auth.refreshIdToken(refreshToken).then(function (idToken) {
+                store.set('token', idToken);
+                return idToken;
+            });
+        } else {
+            return idToken;
+        }
+    }
 
-      .state('app.browse', {
-          url: "/browse",
-          views: {
-              'menuContent': {
-                  templateUrl: "browse.html"
-              }
-          }
-      })
-      .state('app.playlists', {
-          url: "/playlists",
-          views: {
-              'menuContent': {
-                  templateUrl: "playlists.html",
-                  controller: 'PlaylistsCtrl'
-              }
-          }
-      })
+    $httpProvider.interceptors.push('jwtInterceptor');
 
-      .state('app.single', {
-          url: "/playlists/:playlistId",
-          views: {
-              'menuContent': {
-                  templateUrl: "playlist.html",
-                  controller: 'PlaylistCtrl'
-              }
-          }
-      })
-
-    .state('app.groups', {
-        url: "/groups",
-        views: {
-            'menuContent': {
-                templateUrl: "groups.html"
+}).run(function ($rootScope, auth, store, jwtHelper, $location, $state ) {
+    //This hooks all auth avents
+    auth.hookEvents();
+    var refreshingToken = null;
+    $rootScope.$on('$locationChangeStart', function () {
+        var token = store.get('token');
+        var refreshToken = store.get('refreshToken');
+        if (token) {
+            if (!jwtHelper.isTokenExpired(token)) {
+                if (!auth.isAuthenticated) {
+                    auth.authenticate(store.get('profile'), token);
+                }
+            } else {
+                if (refreshToken) {
+                    if (refreshingToken === null) {
+                        refreshingToken = auth.refreshIdToken(refreshToken).then(function (idToken) {
+                            store.set('token', idToken);
+                            auth.authenticate(store.get('profile'), idToken);
+                        }).finally(function () {
+                            refreshingToken = null;
+                        });
+                    }
+                    return refreshingToken;
+                } else {
+                    $location.path('/init');// Notice: this url must be the one defined
+                    //$state.on('init');// Notice: this url must be the one defined
+                }                            // in your login state. Refer to step 5.
             }
         }
     });
-  // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+    //$rootScope.$on('$locationChangeStart', function () {
+    //    if (!auth.isAuthenticated) {
+    //        var token = store.get('token');
+    //        if (token) {
+    //            auth.authenticate(store.get('profile'), token);
+    //            $state.go('app.wall');
+    //        }
+    //    }
+    //});
 });

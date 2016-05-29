@@ -1,0 +1,65 @@
+<ion-side-menus enable-menu-with-back-views="false">
+    <ion-side-menu-content>
+        <div class="bar bar-header">
+            <button style="color:#fff;" class="button button-icon button-clear ion-navicon" menu-toggle="primary"></button>
+            <div class="h1 title">
+                <img src="images/Logo_sm.png" id="logo2" width="22" height="22" alt="logo" />
+            </div>
+            <button class="button button-clear button-positive" style="padding:2px 6px 0 0;">
+                <img src="images/Edit.png" id="edit" width="22" height="22" alt="edit" />
+            </button>
+        </div>
+        <ion-nav-view name="menuContent" animation="slide-left-right"></ion-nav-view>
+    </ion-side-menu-content>
+    <ion-side-menu side="left">
+        <div class="bar bar-header" style="background: #49545a;color:#fff;">
+            <div class="h1 title" id="header-menu">Hi-5</div>
+            <button class="button button-clear button-positive"><img src="images/x.png" id="edit" width="16" height="16" alt="edit" /></button>
+        </div>
+        <ion-content class="prueba" scroll="false">
+            <div class="logo-perfil">
+                <img src="{{session.picture}}" id="logo" width="120" height="120" alt="perfil" />
+                <h2 class="perfil-nombre">{{session.name}}</h2>
+                <h5 class="perfil-email">{{session.email}}</h5>
+            </div>
+            <ion-list>
+                <ion-item menu-close ui-sref="app.profile">
+                    <a class="item iconos" href="#">
+                        <img src="images/01.png" id="01" width="16" height="16" alt="" />
+                        <span>Profile</span>
+                    </a>
+                </ion-item>
+                <ion-item menu-close ui-sref="app.groups">
+                    <a class="item iconos" href="#">
+                        <img src="images/02.png" id="02" width="16" height="16" alt="" />
+                        <span>Groups</span>
+                    </a>
+                </ion-item>
+                <ion-item menu-close ui-sref="app.wall">
+                    <a class="item iconos" href="#">
+                        <img src="images/03.png" id="03" width="16" height="16" alt="" />
+                        <span>Rounds of applause</span>
+                    </a>
+                </ion-item>
+                <ion-item menu-close ui-sref="app.wall">
+                    <a class="item iconos" href="#">
+                        <img src="images/04.png" id="04" width="16" height="16" alt="" />
+                        <span>Home</span>
+                    </a>
+                </ion-item>
+                <ion-item menu-close ui-sref="app.playlists">
+                    <a class="item iconos" href="#">
+                        <img src="images/05.png" id="05" width="16" height="16" alt="" />
+                        <span>Configuration</span>
+                    </a>
+                </ion-item>
+                <ion-item menu-close ui-sref="app.playlists" ng-click="logout()">
+                    <a class="item iconos" href="#">
+                        <img src="images/06.png" id="06" width="16" height="16" alt="" />
+                        <span>Get out</span>
+                    </a>
+                </ion-item>
+            </ion-list>
+        </ion-content>
+    </ion-side-menu>
+</ion-side-menus>

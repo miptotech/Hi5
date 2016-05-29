@@ -1,0 +1,43 @@
+﻿
+body #a0-lock.a0-theme-default .a0-panel * {
+    background-color: #3bb7f5;
+}
+
+.a0-body-content{
+    background-color: #3bb7f5;
+}
+
+.a0-primary
+{
+    background-color: #3bb7f5;
+}
+.a0-mode-container
+{
+    background-color: #3bb7f5;
+}
+.a0-notloggedin a0-mode
+{
+    background-color: #3bb7f5;
+}
+#a0-lock.a0-theme-default .a0-panel .a0-mode form .a0-body-content 
+{
+    background-color: #3bb7f5;
+}
+#a0-lock.a0-theme-default .a0-popup .a0-centrix .a0-panel
+{
+    background-color: #3bb7f5;
+}
+.a0-icon-budicon-5,.a0-icon-budicon
+{
+    display:none;
+}
+#a0-lock.a0-theme-default .a0-panel button.a0-primary
+{
+    border-radius: 3px;
+    border: 1px solid #f1f1f1;
+    position: relative;
+    background: #f1f1f1;
+    padding-left: 40px;
+    width:100px;
+}
+.a0-primary .a0-next{}

@@ -2,58 +2,35 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>Todo</title>
-    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width" />
+    <title></title>
 
-    <link href="css/ionic.css" rel="stylesheet">
+    <!--<link href="css/ionic.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="http://code.ionicframework.com/1.0.0/css/ionic.css" />
+    <link href="css/style.css" rel="stylesheet">
 
-    <script src="scripts/libs/ionic.bundle.js"></script>
-    <script src="scripts/app.js"></script>
+    <script src="scripts/libs/auth0-lock.js"></script>
 
-    <!-- Needed for Cordova/PhoneGap (will be a 404 during development) -->
+    <!-- ionic/angularjs js -->
+    <!--<script src="scripts/libs/ionic.bundle.js"></script>-->
+    <script src="http://code.ionicframework.com/1.0.0/js/ionic.bundle.js"></script>
+
+    <script src="scripts/libs/auth0-angular.js"></script>
+    <script src="scripts/libs/angular-storage.js"></script>
+    <script src="scripts/libs/angular-jwt.js"></script>
+
+    <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
+
+    <!-- your app's js -->
+    <script src="scripts/auth0-variables.js"></script>
+    <script src="scripts/app.js"></script>
+    <script src="scripts/controllers.js"></script>
+
+    <link rel="stylesheet" href="css/custom.css" />
+
 </head>
-<body>
-
-    <ion-side-menus>
-
-        <!-- Center content -->
-        <ion-side-menu-content>
-            <div class="top-text">
-                <h3 class="">Welcome to Hi5!</h3>
-            </div>
-            <ion-content scroll="false">
-                <div style="margin-top:15px;" class="upper-space">
-                    <div class="logo">
-                        <img src="images/logo.png" width="200" height="230" alt="logo" />
-                    </div>
-                </div>
-                <div class="upper-space2">
-                    <a href="login.html" class="button button-block button-light">
-                        <span class="login-btn">Log In</span>
-                    </a>
-                </div>
-                <div style="margin-top:15px;" class="login"> <!-- Arcadio -->
-                    <p>Don't have an account? <a href="register.html"><b>Register</b></a></p>
-                </div>
-            </ion-content>
-        </ion-side-menu-content>
-
-        <!-- Left menu -->
-        <!--<ion-side-menu side="left">
-            <ion-header-bar class="bar-dark">
-                <h1 class="title">Projects</h1>
-                <button class="button button-icon ion-plus" ng-click="newProject()"></button>
-            </ion-header-bar>
-            <ion-content scroll="false">
-                <ion-list>
-                    <ion-item ng-repeat="project in projects" ng-click="selectProject(project, $index)" ng-class="{active: activeProject == project}">
-                        {{project.title}}
-                    </ion-item>
-                </ion-list>
-            </ion-content>
-        </ion-side-menu>-->
-
-    </ion-side-menus>
+<body ng-app="starter">
+    <ion-nav-view></ion-nav-view>
 </body>
 </html>

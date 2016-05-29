@@ -1,0 +1,92 @@
+<ion-view title="Search">
+
+    <ion-content class="has-header">
+        <div class="bar bar-header">
+            <button class="button button-clear button-positive" style="padding:2px 6px 0 5px;">
+                <img src="images/Arrow.png" id="edit" width="16" height="16" alt="edit" />
+            </button>
+            <div class="h1 title" style="color:#ffffff;">
+                Edit Profile
+            </div>
+            <button ng-click="update_user()" class="button button-clear button-positive" style="padding:2px 6px 0 0;">
+                <img src="images/Icon.png" id="edit" width="16" height="16" alt="edit" />
+            </button>
+        </div>
+        <div class="logo-perfil-usr">
+            <img src="{{session.picture}}" id="logo" width="120" height="120" alt="perfil" />
+            <h2 class="perfil-usuario">{{session.name}}</h2>
+            <h5 class="perfil-email">{{session.email}}</h5>
+        </div>
+        <ul class="list">
+            <li class="item">
+                Email
+                <span class="item-note">
+                    <input ng-model="session.email" ng-disabled="!editable" type="text" placeholder="John@mail.com" disabled>
+                    <!--{{email}}-->
+                </span>
+                <!--<label class="item item-input">
+                    <input ng-model="email" type="text" placeholder="First Name">
+                </label>-->
+            </li>
+            <li class="item">
+                Password
+                <span class="item-note">
+                    -----------
+                </span>
+            </li>
+            <!--<li class="item item-toggle">
+                Remember me
+                <span class="item-note">
+                    <label class="toggle toggle-calm">
+                        <input type="checkbox">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                </span>
+            </li>-->
+            <li class="item">
+                Name
+                <span class="item-note">
+                    <input ng-model="session.name" ng-disabled="editable" type="text" placeholder="Jonh Smith" disabled>
+                    <!--{{name}}-->
+                </span>
+            </li>
+            <li class="item">
+                Groups
+                <span class="item-note">
+                    Lorem ipsum it amen
+                </span>
+            </li>
+            <li class="item">
+                Location
+                <span class="item-note">
+                    Canada
+                </span>
+            </li>
+            <li class="item item-toggle">
+                Facebook
+                <span class="item-note">
+                    <label class="toggle toggle-calm">
+                        <input type="checkbox">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                </span>
+            </li>
+            <li class="item item-toggle">
+                Google +
+                <span class="item-note">
+                    <label class="toggle toggle-calm">
+                        <input type="checkbox">
+                        <div class="track">
+                            <div class="handle"></div>
+                        </div>
+                    </label>
+                </span>
+            </li>
+        </ul>
+    </ion-content>
+
+</ion-view>

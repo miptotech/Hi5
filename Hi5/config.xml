@@ -106,5 +106,11 @@
     <splash src="res/screens/wp8/SplashScreenImage.png" width="768" height="1280" />
   </platform>
   <plugin name="cordova-plugin-ms-azure-mobile-apps" version="2.0.0-beta4" />
+  <plugin name="cordova-plugin-InAppBrowser" version="1.4.0" />
+  <feature name="InAppBrowser">
+    <param name="ios-package" value="CDVInAppBrowser" />
+    <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
+  </feature>
   <plugin name="cordova-plugin-inappbrowser" version="1.4.0" />
+  <plugin name="cordova-plugin-statusbar" version="2.1.3" />
 </widget>
