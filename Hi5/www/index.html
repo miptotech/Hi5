@@ -22,12 +22,44 @@
     <!-- cordova script (this will be a 404 during development) -->
     <script src="cordova.js"></script>
 
-    <!-- your app's js -->
-    <script src="scripts/auth0-variables.js"></script>
-    <script src="scripts/app.js"></script>
-    <script src="scripts/controllers.js"></script>
+    <ion-side-menus>
 
-    <link rel="stylesheet" href="css/custom.css" />
+        <!-- Center content -->
+        <ion-side-menu-content>
+            <div class="top-text">
+                <h3 class="">Welcome to Hi5!</h3>
+            </div>
+            <ion-content scroll="false">
+                <div style="margin-top:15px;" class="upper-space">
+                    <div class="logo">
+                        <img src="images/logo.png" width="200" height="230" alt="logo" />
+                    </div>
+                </div>
+                <div class="upper-space2">
+                    <a href="login.html" class="button button-block button-light">
+                        <span class="login-btn">Log In</span>
+                    </a>
+                </div>
+                <div style="margin-top:15px;" class="login"> <!-- Arcadio -->
+                    <p>Don't have an account? <a href="register.html"><b>Register</b></a></p>
+                </div>
+            </ion-content>
+        </ion-side-menu-content>
+
+        <!-- Left menu -->
+        <!--<ion-side-menu side="left">
+            <ion-header-bar class="bar-dark">
+                <h1 class="title">Projects</h1>
+                <button class="button button-icon ion-plus" ng-click="newProject()"></button>
+            </ion-header-bar>
+            <ion-content scroll="false">
+                <ion-list>
+                    <ion-item ng-repeat="project in projects" ng-click="selectProject(project, $index)" ng-class="{active: activeProject == project}">
+                        {{project.title}}
+                    </ion-item>
+                </ion-list>
+            </ion-content>
+        </ion-side-menu>-->
 
 </head>
 <body ng-app="starter">

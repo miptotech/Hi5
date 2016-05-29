@@ -15,10 +15,10 @@
         "is_top_level": false,
         "variables": {}
     },
-    "cordova-plugin-statusbar": {
+    "cordova-plugin-whitelist": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-statusbar@~2.1.0"
+            "id": "cordova-plugin-whitelist@~1.2.1"
         },
         "is_top_level": true,
         "variables": {}
