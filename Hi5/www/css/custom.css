@@ -1,6 +1,7 @@
 ﻿
 body #a0-lock.a0-theme-default .a0-panel * {
     background-color: #3bb7f5;
+    color: #fff;
 }
 
 .a0-body-content{
@@ -30,6 +31,7 @@ body #a0-lock.a0-theme-default .a0-panel * {
 .a0-icon-budicon-5,.a0-icon-budicon
 {
     display:none;
+    background-color: #fff;
 }
 #a0-lock.a0-theme-default .a0-panel button.a0-primary
 {
@@ -41,3 +43,38 @@ body #a0-lock.a0-theme-default .a0-panel * {
     width:100px;
 }
 .a0-primary .a0-next{}
+
+#a0-lock.a0-theme-default .a0-panel .a0-icon-container .a0-image img {
+    height: 171px;
+    width: 150px;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+#a0-lock.a0-theme-default .a0-panel .a0-instructions, #a0-lock.a0-theme-default .a0-panel .a0-separator {
+    color: #fff;
+    font-size: 13px;
+    margin: 10px 0;
+    line-height: 1.6;
+}
+
+#a0-lock.a0-theme-default .a0-panel .a0-all, #a0-lock.a0-theme-default .a0-panel .a0-forgot-pass {
+    font-size: 13px;
+    margin-top: 20px;
+    font-weight: 400;
+    display: inline-block;
+    color: #fff;
+    cursor: pointer;
+}
+
+#a0-lock.a0-theme-default .a0-panel .a0-email .a0-input-box, #a0-lock.a0-theme-default .a0-panel .a0-password .a0-input-box, #a0-lock.a0-theme-default .a0-panel .a0-repeatPassword .a0-input-box, #a0-lock.a0-theme-default .a0-panel .a0-username .a0-input-box {
+    border-radius: 3px;
+    border: 1px solid #fff;
+    position: relative;
+    background: #fff;
+    padding-left: 40px;
+    -webkit-transition: border-color .8s;
+    -moz-transition: border-color .8s;
+    overflow: hidden;
+    transition: .25s ease-in;
+}

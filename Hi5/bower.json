@@ -4,6 +4,7 @@
     "ionic": "~1.3.0",
     "auth0-angular": "3.*",
     "a0-angular-storage": ">= 0.0.6",
-    "angular-jwt": ">= 0.0.4"
+    "angular-jwt": ">= 0.0.4",
+    "ion-autocomplete": ">= 0.2.2"
   }
 }

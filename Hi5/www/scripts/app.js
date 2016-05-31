@@ -1,5 +1,5 @@
 
-angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-storage', 'angular-jwt'])
+angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-storage', 'angular-jwt', 'ion-autocomplete'])
 
 .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
@@ -53,6 +53,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-sto
                 'menuContent': {
                     templateUrl: "templates/groups.html",
                     controller: 'GroupCtrl'
+                }
+            }
+        })
+        .state('app.friends', {
+            url: '/friends',
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/friends.html",
+                    controller: 'FriendCtrl'
+                }
+            }
+        })
+
+        .state('app.searchfriends', {
+            url: '/searchfriends',
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/searchfriends.html",
+                    controller: 'SearchFriendCtrl'
                 }
             }
         });

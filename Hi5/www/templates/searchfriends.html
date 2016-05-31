@@ -1,0 +1,35 @@
+﻿<ion-view title="Friends">
+<!--  -->
+    <ion-content class="has-header">
+        <div class="bar bar-header">
+            <button ui-sref="app.friends" class="button button-clear button-positive" style="padding:2px 6px 0 5px;">
+                <img src="images/Arrow.png" id="edit" width="16" height="16" alt="edit" />
+            </button>
+            <div class="h1 title" style="color:#ffffff;">
+                Search Friends
+            </div>
+            <button ng-click="update_user()" class="button button-clear button-positivev" style="padding:2px 6px 0 0;">
+                <!--<i class="icon ion-plus" style="color:white;"></i>-->
+                <!--<img src="images/Icon.png" id="edit" width="16" height="16" alt="edit" />-->
+            </button>
+        </div>
+        <div class="list" style="padding-top:70px;">
+            <!--<h3 class="groups-title">My Friends</h3>-->
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <i class="icon ion-search placeholder-icon"></i>
+                    <input ng-keypress="get_users($event,data.search)" ng-model="data.search" type="text" placeholder="Search Friend" />
+                </label>
+            </div>
+
+            <a class="item item-thumbnail-left" href="#" ng-click="add_friend(row)" ng-repeat="row in list">
+                <img src="{{row.picture}}">
+                <h2><b>{{row.name}}</b></h2>
+                <p>Add Friend</p>
+            </a>
+
+
+        </div>
+    </ion-content>
+
+</ion-view>

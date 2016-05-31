@@ -16,7 +16,7 @@
             <div class="h1 title" id="header-menu">Hi-5</div>
             <button class="button button-clear button-positive"><img src="images/x.png" id="edit" width="16" height="16" alt="edit" /></button>
         </div>
-        <ion-content class="prueba" scroll="false">
+        <ion-content class="prueba" >
             <div class="logo-perfil">
                 <img src="{{session.picture}}" id="logo" width="120" height="120" alt="perfil" />
                 <h2 class="perfil-nombre">{{session.name}}</h2>
@@ -27,6 +27,12 @@
                     <a class="item iconos" href="#">
                         <img src="images/01.png" id="01" width="16" height="16" alt="" />
                         <span>Profile</span>
+                    </a>
+                </ion-item>
+                <ion-item menu-close ui-sref="app.friends">
+                    <a class="item iconos" href="#">
+                        <img src="images/01.png" id="01" width="16" height="16" alt="" />
+                        <span>Friends</span>
                     </a>
                 </ion-item>
                 <ion-item menu-close ui-sref="app.groups">
