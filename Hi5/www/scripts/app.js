@@ -93,7 +93,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-sto
         domain: AUTH0_DOMAIN,
         clientID: AUTH0_CLIENT_ID,
         callbackURL: AUTH0_CALLBACK_URL,
-        loginState: 'login'
+        loginState: 'init'
     });
 
     jwtInterceptorProvider.tokenGetter = function (store, jwtHelper, auth) {
@@ -114,7 +114,11 @@ angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-sto
 
     $httpProvider.interceptors.push('jwtInterceptor');
 
-}).run(function ($rootScope, auth, store, jwtHelper, $location, $state) {
+}).run(function ($rootScope, auth, store, jwtHelper, $location, $state, $http) {
+    var url_base = "http://localhost/hi5/";
+    //var url_base = "http://mipto.com/hi5/";
+    store.set('url_base', url_base);
+
     //This hooks all auth avents
     auth.hookEvents();
     var refreshingToken = null;
@@ -125,6 +129,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-sto
             if (!jwtHelper.isTokenExpired(token)) {
                 if (!auth.isAuthenticated) {
                     auth.authenticate(store.get('profile'), token);
+                    var profile = store.get('profile');
+                    $http({
+                        method: 'GET',
+                        url: url_base+'get_user_info.php',
+                        params: {
+                            'email': profile.email
+                        },
+                    }).then(function successCallback(response) {
+                        store.remove('session');
+                        var session = {
+                            'id': response.data.id,
+                            'name': response.data.name,
+                            'email': response.data.email,
+                            'picture': response.data.picture
+                        }
+                        store.set('session', session);
+                    }, function errorCallback(response) {
+
+                    });
                 }
             } else {
                 if (refreshToken) {
@@ -132,6 +155,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-sto
                         refreshingToken = auth.refreshIdToken(refreshToken).then(function (idToken) {
                             store.set('token', idToken);
                             auth.authenticate(store.get('profile'), idToken);
+                            var profile = store.get('profile');
+                            $http({
+                                method: 'GET',
+                                url: url_base+'get_user_info.php',
+                                params: {
+                                    'email': profile.email
+                                },
+                            }).then(function successCallback(response) {
+                                store.remove('session');
+                                var session = {
+                                    'id': response.data.id,
+                                    'name': response.data.name,
+                                    'email': response.data.email,
+                                    'picture': response.data.picture
+                                }
+                                store.set('session', session);
+                            }, function errorCallback(response) {
+
+                            });
                         }).finally(function () {
                             refreshingToken = null;
                         });
@@ -144,13 +186,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-sto
             }
         }
     });
-    $rootScope.$on('$locationChangeStart', function () {
-        if (!auth.isAuthenticated) {
-            var token = store.get('token');
-            if (token) {
-                auth.authenticate(store.get('profile'), token);
-                $state.go('app.wall');
-            }
-        }
-    });
+    //$rootScope.$on('$locationChangeStart', function () {
+    //    if (!auth.isAuthenticated) {
+    //        var token = store.get('token');
+    //        if (token) {
+    //            auth.authenticate(store.get('profile'), token);
+    //            $state.go('app.wall');
+    //        }
+    //    }
+    //});
 });

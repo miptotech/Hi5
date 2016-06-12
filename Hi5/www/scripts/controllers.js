@@ -1,6 +1,7 @@
 angular.module('starter.controllers', [])
 
 .controller('LoginCtrl', function ($scope, auth, $state, store, $http) {
+    var url_base = store.get('url_base');
     function doAuth() {
         auth.signin({
             closable: false,
@@ -17,7 +18,7 @@ angular.module('starter.controllers', [])
 
             $http({
                 method: 'GET',
-                url: 'http://localhost/hi5/get_user_exist.php',
+                url: url_base+'get_user_exist.php',
                 params: {
                     email: profile.email
                 }
@@ -30,7 +31,7 @@ angular.module('starter.controllers', [])
                     };
                     $http({
                         method: 'GET',
-                        url: 'http://localhost/hi5/post_user_create.php',
+                        url: url_base+'post_user_create.php',
                         params: FormData,
                     }).then(function successCallback(response) {
                         var session = {
@@ -49,7 +50,7 @@ angular.module('starter.controllers', [])
                 } else {
                     $http({
                         method: 'GET',
-                        url: 'http://localhost/hi5/get_user_info.php',
+                        url: url_base+'get_user_info.php',
                         params: {
                             'email': profile.email
                         },
@@ -93,7 +94,8 @@ angular.module('starter.controllers', [])
         store.remove('profile');
         store.remove('refreshToken');
         store.remove('session');
-        $state.go('login', {}, { reload: true });
+        //$state.go('login', {}, { reload: true });
+        $state.go('init', {}, { reload: true });
     };
 })
 
@@ -102,29 +104,15 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ProfileCtrl', function ($scope, $http, auth, store, $ionicPopup) {
+    var url_base = store.get('url_base');
     $scope.session = store.get('session');
-
-    //$http({
-    //    method: 'GET',
-    //    url: 'http://localhost/hi5/get_user_info.php',
-    //    params: {
-    //        'email': $scope.session.email
-    //    },
-    //}).then(function successCallback(response) {
-    //    $scope.session.email = response.data.email;
-    //    $scope.session.name = response.data.name;
-    //    $scope.session.picture = response.data.picture;
-    //    //$scope.picture = auth.profile.picture;
-    //}, function errorCallback(response) {
-
-    //});
 
     $scope.editable = false;
 
     $scope.update_user = function () {
         $http({
             method: 'GET',
-            url: 'http://localhost/hi5/put_user_update.php',
+            url: url_base + 'put_user_update.php',
             params: {
                 'email': $scope.session.email,
                 'name': $scope.session.name
@@ -147,12 +135,13 @@ angular.module('starter.controllers', [])
 })
 
 .controller('FriendCtrl', function ($scope, $http, store, $ionicPopup) {
+    var url_base = store.get('url_base');
     $scope.session = store.get('session');
     $scope.list = [];
 
     $http({
         method: 'GET',
-        url: 'http://localhost/hi5/get_friends.php',
+        url: url_base+'get_friends.php',
         params: {
             'id': $scope.session.id
         },
@@ -164,6 +153,7 @@ angular.module('starter.controllers', [])
 })
 
 .controller('SearchFriendCtrl', function ($scope, $http, store, $ionicPopup) {
+    var url_base = store.get('url_base');
     $scope.session = store.get('session');
     $scope.list = [];
     $scope.data = {
@@ -172,11 +162,9 @@ angular.module('starter.controllers', [])
 
     $scope.get_users = function (e, search) {
         var charCode = (e.which) ? e.which : e.keyCode;
-        //search += charCode;
-        //console.log(search + String.fromCharCode(charCode));
         $http({
             method: 'GET',
-            url: 'http://localhost/hi5/get_contact.php',
+            url: url_base+'get_contact.php',
             params: {
                 'search': search + String.fromCharCode(charCode),
                 'email': $scope.session.email
@@ -189,10 +177,9 @@ angular.module('starter.controllers', [])
     }
 
     $scope.add_friend = function (row) {
-        //console.log(row);
         $http({
             method: 'GET',
-            url: 'http://localhost/hi5/post_add_friend.php',
+            url: url_base+'post_add_friend.php',
             params: {
                 'id': $scope.session.id,
                 'idFriend': row.id
@@ -211,30 +198,38 @@ angular.module('starter.controllers', [])
 
         });
     }
-
-    //$scope.model = "";
-    //$scope.clickedValueModel = "";
-    //$scope.removedValueModel = "";
-
-    //$scope.getTestItems = function (query) {
-    //    if (query) {
-    //        return {
-    //            items: [
-    //                { id: "1", name: query + "1", view: "view: " + query + "1" },
-    //                { id: "2", name: query + "2", view: "view: " + query + "2" },
-    //                { id: "3", name: query + "3", view: "view: " + query + "3" }]
-    //        };
-    //    }
-    //    return { items: [] };
-    //};
-    //$scope.itemsClicked = function (callback) {
-    //    $scope.clickedValueModel = callback;
-    //};
-    //$scope.itemsRemoved = function (callback) {
-    //    $scope.removedValueModel = callback;
-    //};
 })
 
-.controller('MessageCtrl', function ($scope) {
+.controller('MessageCtrl', function ($scope, $http, store, $state, $ionicPopup) {
+    var url_base = store.get('url_base');
+    $scope.session = store.get('session');
+
     $scope.hi5_check = false;
+    $scope.message = "";
+    $scope.url_img = "";
+    $scope.friend_id = "";
+
+    $scope.post_message = function () {
+        $http({
+            method: 'GET',
+            url: url_base + 'post_add_post.php',
+            params: {
+                'id': $scope.session.id,
+                'idFriend': $scope.friend_id,
+                'hi5_check': $scope.hi5_check,
+                'message': $scope.message
+            },
+        }).then(function successCallback(response) {
+            //console.log(response);
+            var alertPopup = $ionicPopup.alert({
+                title: 'Message Added!',
+                template: 'Successfully!'
+            });
+            alertPopup.then(function (res) {
+                $state.go('app.wall');
+            });
+        }, function errorCallback(response) {
+
+        });
+    }
 });
