@@ -74,6 +74,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-sto
                     controller: 'SearchFriendCtrl'
                 }
             }
+        })
+        .state('app.message', {
+            url: '/message',
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/message.html",
+                    controller: 'MessageCtrl'
+                }
+            }
         });
     // if none of the above states are matched, use this as the fallback
     //$urlRouterProvider.otherwise('/init');
@@ -105,7 +114,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-sto
 
     $httpProvider.interceptors.push('jwtInterceptor');
 
-}).run(function ($rootScope, auth, store, jwtHelper, $location, $state ) {
+}).run(function ($rootScope, auth, store, jwtHelper, $location, $state) {
     //This hooks all auth avents
     auth.hookEvents();
     var refreshingToken = null;
@@ -135,13 +144,13 @@ angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-sto
             }
         }
     });
-    //$rootScope.$on('$locationChangeStart', function () {
-    //    if (!auth.isAuthenticated) {
-    //        var token = store.get('token');
-    //        if (token) {
-    //            auth.authenticate(store.get('profile'), token);
-    //            $state.go('app.wall');
-    //        }
-    //    }
-    //});
+    $rootScope.$on('$locationChangeStart', function () {
+        if (!auth.isAuthenticated) {
+            var token = store.get('token');
+            if (token) {
+                auth.authenticate(store.get('profile'), token);
+                $state.go('app.wall');
+            }
+        }
+    });
 });

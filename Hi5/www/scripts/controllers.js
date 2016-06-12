@@ -86,7 +86,7 @@ angular.module('starter.controllers', [])
 
 .controller('AppCtrl', function ($scope, auth, store, $state) {
     $scope.session = store.get('session');
-
+    $scope.showMessagebtn = true;
     $scope.logout = function () {
         auth.signout();
         store.remove('token');
@@ -167,7 +167,7 @@ angular.module('starter.controllers', [])
     $scope.session = store.get('session');
     $scope.list = [];
     $scope.data = {
-        search : ""
+        search: ""
     }
 
     $scope.get_users = function (e, search) {
@@ -233,4 +233,8 @@ angular.module('starter.controllers', [])
     //$scope.itemsRemoved = function (callback) {
     //    $scope.removedValueModel = callback;
     //};
+})
+
+.controller('MessageCtrl', function ($scope) {
+    $scope.hi5_check = false;
 });
