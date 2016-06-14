@@ -1,6 +1,6 @@
 angular.module('starter.controllers', [])
 
-.controller('LoginCtrl', function ($scope, auth, $state, store, $http) {
+.controller('LoginCtrl', function ($scope, auth, $state, store, $http, Session) {
     var url_base = store.get('url_base');
     function doAuth() {
         auth.signin({
@@ -23,7 +23,7 @@ angular.module('starter.controllers', [])
                     email: profile.email
                 }
             }).then(function successCallback(response) {
-                if (response.data == "0") {
+                if (response.data === "0") {
                     var FormData = {
                         'name': profile.name,
                         'email': profile.email,
@@ -42,6 +42,11 @@ angular.module('starter.controllers', [])
                         }
 
                         store.set('session', session);
+
+                        Session.set(response.data.id, 'id');
+                        Session.set(profile.name, 'name');
+                        Session.set(profile.email, 'email');
+                        Session.set(profile.picture, 'picture');
 
                         $state.go('app.wall');
                     }, function errorCallback(response) {
@@ -64,6 +69,11 @@ angular.module('starter.controllers', [])
                         }
                         store.set('session', session);
 
+                        Session.set(response.data.id, 'id');
+                        Session.set(response.data.name, 'name');
+                        Session.set(response.data.email, 'email');
+                        Session.set(response.data.picture, 'picture');
+
                     }, function errorCallback(response) {
 
                     });
@@ -85,8 +95,10 @@ angular.module('starter.controllers', [])
     doAuth();
 })
 
-.controller('AppCtrl', function ($scope, auth, store, $state) {
-    $scope.session = store.get('session');
+.controller('AppCtrl', function ($scope, auth, store, $state, Session) {
+    //$scope.session = store.get('session');
+    $scope.session = Session.value;
+    
     $scope.showMessagebtn = true;
     $scope.logout = function () {
         auth.signout();
@@ -94,6 +106,7 @@ angular.module('starter.controllers', [])
         store.remove('profile');
         store.remove('refreshToken');
         store.remove('session');
+        Session.clear();
         //$state.go('login', {}, { reload: true });
         $state.go('init', {}, { reload: true });
     };
@@ -103,9 +116,10 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ProfileCtrl', function ($scope, $http, auth, store, $ionicPopup) {
+.controller('ProfileCtrl', function ($scope, $http, auth, store, $ionicPopup, Session) {
     var url_base = store.get('url_base');
-    $scope.session = store.get('session');
+    //$scope.session = store.get('session');
+    $scope.session = Session.value;
 
     $scope.editable = false;
 
@@ -123,6 +137,10 @@ angular.module('starter.controllers', [])
                 template: 'Profile Update!'
             });
             alertPopup.then(function (res) {
+                store.set('session', $scope.session);
+                //Session.set(profile.name, 'name');
+                //Session.set(profile.email, 'email');
+                //Service.set(profile.picture, 'picture');
             });
         }, function errorCallback(response) {
 
@@ -134,9 +152,10 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('FriendCtrl', function ($scope, $http, store, $ionicPopup) {
+.controller('FriendCtrl', function ($scope, $http, store, $ionicPopup, Session) {
     var url_base = store.get('url_base');
-    $scope.session = store.get('session');
+    //$scope.session = store.get('session');
+    $scope.session = Session.value;
     $scope.list = [];
 
     $http({
@@ -152,9 +171,10 @@ angular.module('starter.controllers', [])
     });
 })
 
-.controller('SearchFriendCtrl', function ($scope, $http, store, $ionicPopup) {
+.controller('SearchNewFriendCtrl', function ($scope, $http, store, $ionicPopup, Session) {
     var url_base = store.get('url_base');
-    $scope.session = store.get('session');
+    //$scope.session = store.get('session');
+    $scope.session = Session.value;
     $scope.list = [];
     $scope.data = {
         search: ""
@@ -164,7 +184,7 @@ angular.module('starter.controllers', [])
         var charCode = (e.which) ? e.which : e.keyCode;
         $http({
             method: 'GET',
-            url: url_base+'get_contact.php',
+            url: url_base + 'get_contact.php',
             params: {
                 'search': search + String.fromCharCode(charCode),
                 'email': $scope.session.email
@@ -179,7 +199,7 @@ angular.module('starter.controllers', [])
     $scope.add_friend = function (row) {
         $http({
             method: 'GET',
-            url: url_base+'post_add_friend.php',
+            url: url_base + 'post_add_friend.php',
             params: {
                 'id': $scope.session.id,
                 'idFriend': row.id
@@ -199,15 +219,51 @@ angular.module('starter.controllers', [])
         });
     }
 })
-
-.controller('MessageCtrl', function ($scope, $http, store, $state, $ionicPopup) {
+.controller('SearchFriendCtrl', function ($scope, $http, store,$state, $ionicPopup, Session) {
     var url_base = store.get('url_base');
-    $scope.session = store.get('session');
+    //$scope.session = store.get('session');
+    $scope.session = Session.value;
+    //$scope.selectedFriend = Session.friend;
+    $scope.list = [];
+    $scope.data = {
+        search: ""
+    }
+
+    $scope.list = [];
+
+    $http({
+        method: 'GET',
+        url: url_base + 'get_friends.php',
+        params: {
+            'id': $scope.session.id
+        },
+    }).then(function successCallback(response) {
+        $scope.list = response.data;
+    }, function errorCallback(response) {
+
+    });
+
+    $scope.select_friend = function (row) {
+        Session.select_friend(row.id, 'id');
+        Session.select_friend(row.email, 'email');
+        Session.select_friend(row.name, 'name');
+        Session.select_friend(row.picture, 'picture');
+
+        $state.go('app.message');
+    }
+})
+
+.controller('MessageCtrl', function ($scope, $http, store, $state, $ionicPopup, Session) {
+    var url_base = store.get('url_base');
+    //$scope.session = store.get('session');
+    $scope.session = Session.value;
+
+    Session.clear_friend();
+    $scope.friend = Session.friend;
 
     $scope.hi5_check = false;
     $scope.message = "";
     $scope.url_img = "";
-    $scope.friend_id = "";
 
     $scope.post_message = function () {
         $http({
@@ -215,7 +271,7 @@ angular.module('starter.controllers', [])
             url: url_base + 'post_add_post.php',
             params: {
                 'id': $scope.session.id,
-                'idFriend': $scope.friend_id,
+                'idFriend': Session.friend.id,
                 'hi5_check': $scope.hi5_check,
                 'message': $scope.message
             },

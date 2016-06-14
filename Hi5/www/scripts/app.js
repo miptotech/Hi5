@@ -1,5 +1,5 @@
 
-angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-storage', 'angular-jwt', 'ion-autocomplete'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'auth0', 'angular-storage', 'angular-jwt'])
 
 .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
@@ -66,15 +66,26 @@ angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-sto
             }
         })
 
-        .state('app.searchfriends', {
-            url: '/searchfriends',
+        .state('app.searchnewfriend', {
+            url: '/searchnewfriend',
             views: {
                 'menuContent': {
-                    templateUrl: "templates/searchfriends.html",
+                    templateUrl: "templates/searchnewfriend.html",
+                    controller: 'SearchNewFriendCtrl'
+                }
+            }
+        })
+
+        .state('app.searchfriend', {
+            url: '/searchfriend',
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/searchfriend.html",
                     controller: 'SearchFriendCtrl'
                 }
             }
         })
+
         .state('app.message', {
             url: '/message',
             views: {
@@ -113,10 +124,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-sto
     }
 
     $httpProvider.interceptors.push('jwtInterceptor');
-
-}).run(function ($rootScope, auth, store, jwtHelper, $location, $state, $http) {
-    var url_base = "http://localhost/hi5/";
-    //var url_base = "http://mipto.com/hi5/";
+}).run(function ($rootScope, auth, store, jwtHelper, $location, $state, $http, Session) {
+    //var url_base = "http://localhost/hi5/";
+    var url_base = "http://mipto.com/hi5/";
     store.set('url_base', url_base);
 
     //This hooks all auth avents
@@ -145,6 +155,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-sto
                             'picture': response.data.picture
                         }
                         store.set('session', session);
+                        Session.set(response.data.id, 'id');
+                        Session.set(response.data.name, 'name');
+                        Session.set(response.data.email, 'email');
+                        Session.set(response.data.picture, 'picture');
                     }, function errorCallback(response) {
 
                     });
@@ -171,6 +185,10 @@ angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-sto
                                     'picture': response.data.picture
                                 }
                                 store.set('session', session);
+                                Session.set(response.data.id, 'id');
+                                Session.set(response.data.name, 'name');
+                                Session.set(response.data.email, 'email');
+                                Session.set(response.data.picture, 'picture');
                             }, function errorCallback(response) {
 
                             });
@@ -180,9 +198,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'auth0', 'angular-sto
                     }
                     return refreshingToken;
                 } else {
-                    $location.path('/init');// Notice: this url must be the one defined
-                    //$state.on('init');// Notice: this url must be the one defined
-                }                            // in your login state. Refer to step 5.
+                    $location.path('/init');
+                    //$state.on('init');
+                }
             }
         }
     });

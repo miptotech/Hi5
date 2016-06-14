@@ -14,8 +14,10 @@
         <div style="padding: 5px 5px 5px 5px; text-align: center; background: #39b5f3;">
             <div class="card" style="margin-top:50px;">
                 <div class="row">
-                    <div class="col col-25" style=""><img src="images/User.png" width="52" height="52"></div>
-                    <div class="col col-40" style="padding-top:20px;text-align:left;font-size:16px;">Jhon Smit</div>
+                    <div ng-show="friend.picture == ''" class="col col-25" style=""><img src="images/User.png" width="52" height="52"></div>
+                    <div ng-show="friend.picture != ''" class="col col-25" style=""><img src="{{friend.picture}}" width="52" height="52"></div>
+                    <div ng-show="friend.name == ''" class="col col-40" style="padding-top:20px;text-align:left;font-size:16px;">Search User</div>
+                    <div ng-show="friend.name != ''" class="col col-40" style="padding-top:20px;text-align:left;font-size:16px;">{{friend.name}}</div>
                     <div class="col col-35" style=""><ion-checkbox class="item item-checkbox  checkbox-calm" ng-model="hi5_check">Hi-5</ion-checkbox></div>
                 </div>
                 <div class="item item-text-wrap">
@@ -25,8 +27,10 @@
                 </div>
                 <div class="item item-divider" style="background:#fff;">
                     <div class="row">
-                        <div class="col col-20"><img src="images/User.png" width="32" height="32"></div>
-                        <div class="col col-20"><img src="images/User.png" width="32" height="32"></div>
+                        <a ui-sref="app.searchfriend" class="button button-icon icon ion-ios-person-outline"></a>
+                        <a class="button button-icon icon ion-ios-camera-outline"></a>
+                        <!--<div class="col col-20"><img src="images/User.png" width="32" height="32"></div>
+                        <div class="col col-20"><img src="images/User.png" width="32" height="32"></div>-->
                         <!--<div class="col col-60" style="text-align:right;"><b style="color:#39b5f3; padding-right:10px;">to post</b> <img src="images/right_Arrow.png" width="14" height="14"></div>-->
                     </div>
                 </div>
