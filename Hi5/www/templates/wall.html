@@ -1,6 +1,26 @@
 <ion-view title="hi5">
     <ion-content id="content-wall" class="has-header" >
-        <div class="list card">
+        <div ng-show="list.length === 0" style="color: #777; font-size:14px; font-weight:bold; text-align:center;">
+            There's no Hi5 :(
+        </div>
+        <div class="list card"  ng-repeat="row in list">
+            <div class="item item-avatar">
+                <img src="images/User.png">
+                <h2>{{row.name}}</h2>
+                <p>November 05, 1955</p>
+            </div>
+            <div class="item item-body">
+                <!--<div style="background:#808080; height:200px;border-radius:3px;"></div>-->
+                <p>
+                    {{row.message}}
+                </p>
+                <p>
+                    <a href="#" class="subdued">1 Like</a>
+                    <a href="#" class="subdued">5 Comments</a>
+                </p>
+            </div>
+        </div>
+        <!--<div class="list card">
             <div class="item item-avatar">
                 <img src="images/User.png">
                 <h2>Marty McFly</h2>
@@ -18,8 +38,8 @@
                     <a href="#" class="subdued">5 Comments</a>
                 </p>
             </div>
-        </div>
-        <div class="card">
+        </div>-->
+        <!--<div class="card">
             <div class="item item-divider">
                 <div class="list">
 
@@ -51,5 +71,5 @@
                 I'm a Footer in a Card!
             </div>
         </div>
-    </ion-content>
+    </ion-content>-->
 </ion-view>

@@ -39,9 +39,14 @@
         friend['picture'] = '';
     }
 
+    function getID() {
+        return data.id;
+    }
+
     return {
         set: set,
         value: data,
+        getID: getID,
         clear: clear,
         friend: friend,
         select_friend: selectFriend,
