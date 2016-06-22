@@ -94,7 +94,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                     controller: 'MessageCtrl'
                 }
             }
-        });
+        })
+
+    .state('app.configuration', {
+        url: '/configuration',
+        views: {
+            'menuContent': {
+                templateUrl: "templates/configuration.html",
+                controller: 'ConfigCtrl'
+            }
+        }
+    });
     // if none of the above states are matched, use this as the fallback
     //$urlRouterProvider.otherwise('/init');
     $urlRouterProvider.otherwise('/app/wall');
@@ -152,13 +162,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                             'id': response.data.id,
                             'name': response.data.name,
                             'email': response.data.email,
-                            'picture': response.data.picture
+                            'picture': response.data.picture,
+                            'gender': response.data.gender,
+                            'birthday': response.data.birthday
                         }
                         store.set('session', session);
                         Session.set(response.data.id, 'id');
                         Session.set(response.data.name, 'name');
                         Session.set(response.data.email, 'email');
                         Session.set(response.data.picture, 'picture');
+                        Session.set(response.data.gender, 'gender');
+                        Session.set(response.data.birthday, 'birthday');
                     }, function errorCallback(response) {
 
                     });
@@ -182,13 +196,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                                     'id': response.data.id,
                                     'name': response.data.name,
                                     'email': response.data.email,
-                                    'picture': response.data.picture
+                                    'picture': response.data.picture,
+                                    'gender': response.data.gender,
+                                    'birthday': response.data.birthday
                                 }
                                 store.set('session', session);
                                 Session.set(response.data.id, 'id');
                                 Session.set(response.data.name, 'name');
                                 Session.set(response.data.email, 'email');
                                 Session.set(response.data.picture, 'picture');
+                                Session.set(response.data.gender, 'gender');
+                                Session.set(response.data.birthday, 'birthday');
                             }, function errorCallback(response) {
 
                             });

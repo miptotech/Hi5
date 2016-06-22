@@ -65,7 +65,9 @@ angular.module('starter.controllers', [])
                             'id': response.data.id,
                             'name': response.data.name,
                             'email': response.data.email,
-                            'picture': response.data.picture
+                            'picture': response.data.picture,
+                            'gender': response.data.gender,
+                            'birthday': response.data.birthday
                         }
                         store.set('session', session);
 
@@ -73,6 +75,8 @@ angular.module('starter.controllers', [])
                         Session.set(response.data.name, 'name');
                         Session.set(response.data.email, 'email');
                         Session.set(response.data.picture, 'picture');
+                        Session.set(response.data.gender, 'gender');
+                        Session.set(response.data.birthday, 'birthday');
 
                     }, function errorCallback(response) {
 
@@ -127,8 +131,10 @@ angular.module('starter.controllers', [])
             'id': session.id
         },
     }).then(function successCallback(response) {
-        //console.log(response);
-        $scope.list = response.data;
+        console.log(response.data);
+        if (response.data !== "null") {
+            $scope.list = response.data;
+        }
     }, function errorCallback(response) {
 
     });
@@ -140,22 +146,34 @@ angular.module('starter.controllers', [])
     $scope.session = Session.value;
 
     $scope.editable = false;
-    $scope.genderName = "Female";
-    $scope.gender = true;
+
+    if ($scope.session.gender == "F") {
+        $scope.genderName = "Female";
+        $scope.gender = true;
+    }else{
+        $scope.genderName = "Male";
+        $scope.gender = false;
+    }
+
     $scope.setGender = function (gender) {
         if (gender) {
             $scope.genderName = "Female";
+            $scope.session.gender = "F";
         } else {
             $scope.genderName = "Male";
+            $scope.session.gender = "M";
         }
     }
     $scope.update_user = function () {
+        
         $http({
             method: 'GET',
             url: url_base + 'put_user_update.php',
             params: {
                 'email': $scope.session.email,
-                'name': $scope.session.name
+                'name': $scope.session.name,
+                'gender': $scope.session.gender,
+                'birthday': $scope.session.birthday
             },
         }).then(function successCallback(response) {
             var alertPopup = $ionicPopup.alert({
@@ -310,10 +328,17 @@ angular.module('starter.controllers', [])
                 template: 'Successfully!'
             });
             alertPopup.then(function (res) {
-                $state.go('app.wall', {}, { reload: true });
+                //$state.go('app.wall', {}, { reload: true });
+                $state.transitionTo('app.wall', {}, { reload: true, notify: true });
             });
         }, function errorCallback(response) {
 
         });
     }
+})
+
+.controller('ConfigCtrl', function ($scope, $http, store, $state, $ionicPopup, Session) {
+    var url_base = store.get('url_base');
+    //$scope.session = store.get('session');
+    $scope.session = Session.value;
 });

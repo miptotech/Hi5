@@ -8,7 +8,9 @@
         id: null,
         name: '',
         email: '',
-        picture: ''
+        picture: '',
+        gender: '',
+        birthday: ''
     };
 
     var friend = {
@@ -26,6 +28,8 @@
         data['name'] = '';
         data['email'] = '';
         data['picture'] = '';
+        data['gender'] = '';
+        data['birthday'] = '';
     }
 
     function selectFriend(value, field) {
