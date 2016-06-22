@@ -122,7 +122,15 @@ angular.module('starter.controllers', [])
     $scope.session = Session.value;
 
     $scope.editable = false;
-
+    $scope.genderName = "Female";
+    $scope.gender = true;
+    $scope.setGender = function (gender) {
+        if (gender) {
+            $scope.genderName = "Female";
+        } else {
+            $scope.genderName = "Male";
+        }
+    }
     $scope.update_user = function () {
         $http({
             method: 'GET',
