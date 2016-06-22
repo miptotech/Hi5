@@ -112,8 +112,26 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('WallCtrl', function ($scope) {
+.controller('WallCtrl', function ($scope, auth, store, $state, $http, Session) {
+    var url_base = store.get('url_base');
+    var session = store.get('session');
+    //$scope.session = store.get('session');
+    $scope.session = Session.value;
 
+    $scope.list = [];
+
+    $http({
+        method: 'GET',
+        url: url_base + 'get_posts.php',
+        params: {
+            'id': session.id
+        },
+    }).then(function successCallback(response) {
+        //console.log(response);
+        $scope.list = response.data;
+    }, function errorCallback(response) {
+
+    });
 })
 
 .controller('ProfileCtrl', function ($scope, $http, auth, store, $ionicPopup, Session) {
@@ -269,9 +287,11 @@ angular.module('starter.controllers', [])
     Session.clear_friend();
     $scope.friend = Session.friend;
 
-    $scope.hi5_check = false;
-    $scope.message = "";
-    $scope.url_img = "";
+    $scope.msg = {
+        hi5_check : false,
+        message : "",
+        url_img : ""
+    };
 
     $scope.post_message = function () {
         $http({
@@ -280,8 +300,8 @@ angular.module('starter.controllers', [])
             params: {
                 'id': $scope.session.id,
                 'idFriend': Session.friend.id,
-                'hi5_check': $scope.hi5_check,
-                'message': $scope.message
+                'hi5_check': $scope.msg.hi5_check,
+                'message': $scope.msg.message
             },
         }).then(function successCallback(response) {
             //console.log(response);
@@ -290,7 +310,7 @@ angular.module('starter.controllers', [])
                 template: 'Successfully!'
             });
             alertPopup.then(function (res) {
-                $state.go('app.wall');
+                $state.go('app.wall', {}, { reload: true });
             });
         }, function errorCallback(response) {
 
