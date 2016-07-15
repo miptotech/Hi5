@@ -131,8 +131,8 @@ angular.module('starter.controllers', [])
             'id': session.id
         },
     }).then(function successCallback(response) {
-        console.log(response.data);
         if (response.data !== "null") {
+            console.log(response.data);
             $scope.list = response.data;
         }
     }, function errorCallback(response) {
@@ -341,4 +341,58 @@ angular.module('starter.controllers', [])
     var url_base = store.get('url_base');
     //$scope.session = store.get('session');
     $scope.session = Session.value;
+})
+
+.controller('CommentCtrl', function ($scope, $http, store, $state, $ionicPopup, Session, $stateParams) {
+    var url_base = store.get('url_base');
+    //$scope.session = store.get('session');
+    $scope.session = Session.value;
+
+
+    $scope.postid = $stateParams.postid;
+
+    $scope.state = $state.current
+    $scope.params = $stateParams;
+    $scope.list = [];
+
+    $http({
+        method: 'GET',
+        url: url_base + 'get_comments.php',
+        params: {
+            'post_id': $scope.postid
+        },
+    }).then(function successCallback(response) {
+        if (response.data !== "null") {
+            $scope.list = response.data;
+        }
+    }, function errorCallback(response) {
+
+    });
+    $scope.data = {
+        comment: ""
+    };
+
+    $scope.saveComment = function () {
+        $http({
+            method: 'GET',
+            url: url_base + 'post_add_comment.php',
+            params: {
+                'post_id': $scope.postid,
+                'user_id': $scope.session.id,
+                'message': $scope.data.comment
+            },
+        }).then(function successCallback(response) {
+            //console.log(response);
+            var alertPopup = $ionicPopup.alert({
+                title: 'Comment Added!',
+                template: 'Successfully!'
+            });
+            alertPopup.then(function (res) {
+                //$state.go('app.wall', {}, { reload: true });
+                $state.transitionTo('app.wall', {}, { reload: true, notify: true });
+            });
+        }, function errorCallback(response) {
+
+        });
+    }
 });

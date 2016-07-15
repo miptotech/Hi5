@@ -96,15 +96,25 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             }
         })
 
-    .state('app.configuration', {
-        url: '/configuration',
-        views: {
-            'menuContent': {
-                templateUrl: "templates/configuration.html",
-                controller: 'ConfigCtrl'
+        .state('app.configuration', {
+            url: '/configuration',
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/configuration.html",
+                    controller: 'ConfigCtrl'
+                }
             }
-        }
-    });
+        })
+
+        .state('app.comment', {
+            url: '/comment?postid',
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/comment.html",
+                    controller: 'CommentCtrl'
+                }
+            }
+        });
     // if none of the above states are matched, use this as the fallback
     //$urlRouterProvider.otherwise('/init');
     $urlRouterProvider.otherwise('/app/wall');
