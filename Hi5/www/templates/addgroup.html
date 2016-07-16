@@ -1,0 +1,29 @@
+﻿<ion-view title="addgroup">
+    <!--  -->
+    <ion-content class="has-header">
+        <div class="bar bar-header">
+            <button ui-sref="app.groups" class="button button-clear button-positive" style="padding:2px 6px 0 5px;">
+                <img src="images/Arrow.png" id="edit" width="16" height="16" alt="edit" />
+            </button>
+            <div class="h1 title" style="color:#ffffff;">
+                Add New Group
+            </div>
+        </div>
+        <div class="list" style="padding-top:70px;">
+            <label class="item item-input">
+                <span class="input-label">Group Name</span>
+                <input type="text">
+            </label>
+            <label class="item item-input">
+                <textarea placeholder="Description"></textarea>
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Image</span>
+                <input type="file">
+            </label>
+            <button ng-click="addGroup()" class="button button-block button-positive">
+                Add Group
+            </button>
+        </div>
+    </ion-content>
+</ion-view>

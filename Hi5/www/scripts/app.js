@@ -114,6 +114,36 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                     controller: 'CommentCtrl'
                 }
             }
+        })
+
+        .state('app.addgroup', {
+            url: '/addgroup',
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/addgroup.html",
+                    controller: 'AddGroupCtrl'
+                }
+            }
+        })
+
+        .state('app.detailgroup', {
+            url: '/detailgroup?groupid',
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/detailgroup.html",
+                    controller: 'DetailGroupCtrl'
+                }
+            }
+        })
+
+        .state('app.addfriendgroup', {
+            url: '/addfriendgroup?groupid',
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/addfriendgroup.html",
+                    controller: 'AddFriendGroupCtrl'
+                }
+            }
         });
     // if none of the above states are matched, use this as the fallback
     //$urlRouterProvider.otherwise('/init');

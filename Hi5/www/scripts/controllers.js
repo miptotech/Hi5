@@ -192,8 +192,23 @@ angular.module('starter.controllers', [])
     }
 })
 
-.controller('GroupCtrl', function ($scope) {
+.controller('GroupCtrl', function ($scope, $http, store, $ionicPopup, Session) {
+    var url_base = store.get('url_base');
+    //$scope.session = store.get('session');
+    $scope.session = Session.value;
+    $scope.list = [];
 
+    //$http({
+    //    method: 'GET',
+    //    url: url_base + 'get_groups.php',
+    //    params: {
+    //        'id': $scope.session.id
+    //    },
+    //}).then(function successCallback(response) {
+    //    $scope.list = response.data;
+    //}, function errorCallback(response) {
+
+    //});
 })
 
 .controller('FriendCtrl', function ($scope, $http, store, $ionicPopup, Session) {
@@ -395,4 +410,47 @@ angular.module('starter.controllers', [])
 
         });
     }
+})
+
+.controller('AddGroupCtrl', function ($scope, $http, store, $state, $ionicPopup, Session) { //terminar
+    var url_base = store.get('url_base');
+    //$scope.session = store.get('session');
+    $scope.session = Session.value;
+    
+    //esto es en un click
+    //$http({
+    //    method: 'GET',
+    //    url: url_base + 'post_add_group.php',
+    //    params: {
+    //        'post_id': $scope.postid,
+    //        'user_id': $scope.session.id,
+    //        'message': $scope.data.comment
+    //    },
+    //}).then(function successCallback(response) {
+    //    var alertPopup = $ionicPopup.alert({
+    //        title: 'Group Created!',
+    //        template: 'Successfully!'
+    //    });
+    //    alertPopup.then(function (res) {
+    //        //$state.go('app.wall', {}, { reload: true });
+    //        $state.transitionTo('app.groups', {}, { reload: true, notify: true });
+    //    });
+    //}, function errorCallback(response) {
+
+    //});
+
+})
+
+.controller('DetailGroupCtrl', function ($scope, $http, store, $state, $ionicPopup, Session) {//terminar
+    var url_base = store.get('url_base');
+    //$scope.session = store.get('session');
+    $scope.session = Session.value;
+
+})
+
+.controller('AddFriendGroupCtrl', function ($scope, $http, store, $state, $ionicPopup, Session) {//terminar
+    var url_base = store.get('url_base');
+    //$scope.session = store.get('session');
+    $scope.session = Session.value;
+
 });
