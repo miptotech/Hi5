@@ -16,32 +16,37 @@
             <li class="item">
                 Name
                 <span class="item-note">
-                    Los Odiosos 8
+                    {{data.name}}
                 </span>
             </li>
             <li class="item">
                 Admin
                 <span class="item-note">
-                    Arcadio Pernia
+                    {{admin.name}}
                 </span>
             </li>
             <li class="item">
                 Description
                 <span class="item-note">
-                    Lorem ipsum dolor sit amet.
+                    {{data.description}}
                 </span>
             </li>
-            <li class="item">
+            <li ng-show="admin.id == session.id" class="item">
                 Add Member
                 <span class="item-note">
-                    <a class="button button-icon icon ion-plus" ui-sref="app.addfriendgroup"></a>
+                    <a class="button button-icon icon ion-plus" ui-sref="app.addfriendgroup({groupid: '{{groupid}}'})" ui-sref-opts="{reload: true, notify: true}"></a>
                 </span>
             </li>
         </ul>
         <div class="list">
             <h3 class="groups-title">Members</h3>
             <div class="list list-inset">
-                <a class="item item-thumbnail-left" href="#">
+                <a class="item item-thumbnail-left" href="javascript:void(0)" ng-repeat="row in list">
+                    <img src="{{row.picture}}">
+                    <h2><b>{{row.name}}</b></h2>
+                    <p>Active Member</p>
+                </a>
+                <!--<a class="item item-thumbnail-left" href="#">
                     <img src="images/User.png">
                     <h2><b>Arcadio Pernia</b></h2>
                     <p>Active Member</p>
@@ -55,12 +60,7 @@
                     <img src="images/User.png">
                     <h2><b>Arcadio Pernia</b></h2>
                     <p>Active Member</p>
-                </a>
-                <a class="item item-thumbnail-left" href="#">
-                    <img src="images/User.png">
-                    <h2><b>Arcadio Pernia</b></h2>
-                    <p>Active Member</p>
-                </a>
+                </a>-->
             </div>
         </div>
 </ion-content>

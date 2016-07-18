@@ -19,13 +19,13 @@
                 <i class="icon ion-plus" style="color:white;"></i>
             </button>
         </div>
-        <div class="list" style="padding-top:50px;" ui-sref="app.detailgroup">
+        <div class="list" style="padding-top:50px;" ui-sref="app.detailgroup({groupid: '{{row.id}}'})" ui-sref-opts="{reload: true, notify: true}" ng-repeat="row in list">
             <a class="item item-thumbnail-left" >
                 <img src="images/User.png">
-                <h2>Pretty Hate Machine</h2>
-                <p>Nine Inch Nails</p>
+                <h2>{{row.name}}</h2>
+                <p>{{row.description}}</p>
             </a>
-            <a class="item item-thumbnail-left" href="#">
+            <!--<a class="item item-thumbnail-left" href="#">
                 <img src="images/User.png">
                 <h2>Pretty Hate Machine</h2>
                 <p>Nine Inch Nails</p>
@@ -49,7 +49,7 @@
                 <img src="images/User.png">
                 <h2>Pretty Hate Machine</h2>
                 <p>Nine Inch Nails</p>
-            </a>
+            </a>-->
 
         </div>
     </ion-content>

@@ -7,6 +7,9 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
             StatusBar.styleDefault();
         }
     });
+    //if (window.cordova && window.cordova.plugins.Keyboard) {
+        //...
+    //}
 })
 
 .config(function ($stateProvider, $urlRouterProvider, authProvider, jwtInterceptorProvider, $httpProvider) {

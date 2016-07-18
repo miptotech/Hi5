@@ -117,6 +117,11 @@ angular.module('starter.controllers', [])
 })
 
 .controller('WallCtrl', function ($scope, auth, store, $state, $http, Session) {
+    document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady() {
+        console.log(FileTransfer);
+    }
+
     var url_base = store.get('url_base');
     var session = store.get('session');
     //$scope.session = store.get('session');
@@ -132,7 +137,7 @@ angular.module('starter.controllers', [])
         },
     }).then(function successCallback(response) {
         if (response.data !== "null") {
-            console.log(response.data);
+            //console.log(response.data);
             $scope.list = response.data;
         }
     }, function errorCallback(response) {
@@ -198,17 +203,17 @@ angular.module('starter.controllers', [])
     $scope.session = Session.value;
     $scope.list = [];
 
-    //$http({
-    //    method: 'GET',
-    //    url: url_base + 'get_groups.php',
-    //    params: {
-    //        'id': $scope.session.id
-    //    },
-    //}).then(function successCallback(response) {
-    //    $scope.list = response.data;
-    //}, function errorCallback(response) {
+    $http({
+        method: 'GET',
+        url: url_base + 'get_groups.php',
+        params: {
+            'id': $scope.session.id
+        },
+    }).then(function successCallback(response) {
+        $scope.list = response.data;
+    }, function errorCallback(response) {
 
-    //});
+    });
 })
 
 .controller('FriendCtrl', function ($scope, $http, store, $ionicPopup, Session) {
@@ -416,41 +421,140 @@ angular.module('starter.controllers', [])
     var url_base = store.get('url_base');
     //$scope.session = store.get('session');
     $scope.session = Session.value;
+
+    $scope.data = {
+        name: "",
+        description: "",
+        picture: ""
+    }
+
+    $scope.addGroup = function () {
+        $http({
+            method: 'GET',
+            url: url_base + 'post_add_group.php',
+            params: {
+                'user_id': $scope.session.id,
+                'name': $scope.data.name,
+                'description': $scope.data.description
+            },
+        }).then(function successCallback(response) {
+            var alertPopup = $ionicPopup.alert({
+                title: 'Group Created!',
+                template: 'Successfully!'
+            });
+            alertPopup.then(function (res) {
+                //$state.go('app.wall', {}, { reload: true });
+                $state.transitionTo('app.groups', {}, { reload: true, notify: true });
+            });
+        }, function errorCallback(response) {
+
+        });
+    }
     
-    //esto es en un click
-    //$http({
-    //    method: 'GET',
-    //    url: url_base + 'post_add_group.php',
-    //    params: {
-    //        'post_id': $scope.postid,
-    //        'user_id': $scope.session.id,
-    //        'message': $scope.data.comment
-    //    },
-    //}).then(function successCallback(response) {
-    //    var alertPopup = $ionicPopup.alert({
-    //        title: 'Group Created!',
-    //        template: 'Successfully!'
-    //    });
-    //    alertPopup.then(function (res) {
-    //        //$state.go('app.wall', {}, { reload: true });
-    //        $state.transitionTo('app.groups', {}, { reload: true, notify: true });
-    //    });
-    //}, function errorCallback(response) {
-
-    //});
 
 })
 
-.controller('DetailGroupCtrl', function ($scope, $http, store, $state, $ionicPopup, Session) {//terminar
+.controller('DetailGroupCtrl', function ($scope, $http, store, $state, $ionicPopup, Session, $stateParams) {//terminar
+    var url_base = store.get('url_base');
+    //$scope.session = store.get('session');
+    $scope.session = Session.value;
+    $scope.groupid = $stateParams.groupid;
+
+    $scope.data = {};
+    $scope.admin = {};
+    $scope.list = [];
+
+    $http({
+        method: 'GET',
+        url: url_base + 'get_group_detail.php',
+        params: {
+            'id': $scope.groupid
+        },
+    }).then(function successCallback(response) {
+        //console.log(response.data);
+        $scope.data = response.data;
+    }, function errorCallback(response) {
+
+    });
+
+    $http({
+        method: 'GET',
+        url: url_base + 'get_group_friends.php',
+        params: {
+            'id': $scope.groupid
+        },
+    }).then(function successCallback(response) {
+        //console.log(response.data);
+        $scope.list = response.data;
+    }, function errorCallback(response) {
+
+    });
+
+    $http({
+        method: 'GET',
+        url: url_base + 'get_group_admin.php',
+        params: {
+            'id': $scope.groupid
+        },
+    }).then(function successCallback(response) {
+        $scope.admin = response.data;
+    }, function errorCallback(response) {
+
+    });
+
+})
+
+.controller('AddFriendGroupCtrl', function ($scope, $http, store, $state, $ionicPopup, Session, $stateParams) {//terminar
     var url_base = store.get('url_base');
     //$scope.session = store.get('session');
     $scope.session = Session.value;
 
-})
+    $scope.groupid = $stateParams.groupid;
+    $scope.state = $state.current
+    $scope.params = $stateParams;
 
-.controller('AddFriendGroupCtrl', function ($scope, $http, store, $state, $ionicPopup, Session) {//terminar
-    var url_base = store.get('url_base');
-    //$scope.session = store.get('session');
-    $scope.session = Session.value;
+    $scope.data = {
+        search: ""
+    }
+
+    $http({
+        method: 'GET',
+        url: url_base + 'get_friends_no_group.php',
+        params: {
+            'user_id': $scope.session.id,
+            'group_id': $scope.groupid
+        },
+    }).then(function successCallback(response) {
+        $scope.list = response.data;
+    }, function errorCallback(response) {
+        //console.log(response);
+    });
+
+    $scope.get_users = function (e, search) {
+        var charCode = (e.which) ? e.which : e.keyCode;
+    }
+
+    $scope.add_friend = function (row) {
+        $http({
+            method: 'GET',
+            url: url_base + 'post_add_friends_no_group.php',
+            params: {
+                'group_id': $scope.groupid,
+                'friend_id': row.id
+            },
+        }).then(function successCallback(response) {
+            console.log(response);
+            var alertPopup = $ionicPopup.alert({
+                title: 'Friend Added!',
+                template: 'Successfully!'
+            });
+            alertPopup.then(function (res) {
+                var index = $scope.list.indexOf(row);
+                $scope.list.splice(index, 1);
+            });
+        }, function errorCallback(response) {
+
+        });
+    }
 
 });
