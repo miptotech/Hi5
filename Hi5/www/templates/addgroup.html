@@ -8,6 +8,10 @@
             <div class="h1 title" style="color:#ffffff;">
                 Add New Group
             </div>
+            <button ng-click="addGroup()" class="button button-clear button-positivev" style="padding:2px 6px 0 0;">
+                <!--<i class="icon ion-plus" style="color:white;"></i>-->
+                <img src="images/Icon.png" id="edit" width="16" height="16" alt="edit" />
+            </button>
         </div>
         <div class="list" style="padding-top:70px;">
             <label class="item item-input">
@@ -21,9 +25,9 @@
                 <span class="input-label">Image</span>
                 <input ng-model="data.picture" type="file">
             </label>
-            <button ng-click="addGroup()" class="button button-block button-positive">
+            <!--<button ng-click="()" class="button button-block button-positive">
                 Add Group
-            </button>
+            </button>-->
         </div>
     </ion-content>
 </ion-view>
