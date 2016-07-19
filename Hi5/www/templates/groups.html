@@ -19,7 +19,8 @@
                 <i class="icon ion-plus" style="color:white;"></i>
             </button>
         </div>
-        <div class="list" style="padding-top:50px;" ui-sref="app.detailgroup({groupid: '{{row.id}}'})" ui-sref-opts="{reload: true, notify: true}" ng-repeat="row in list">
+        <div style="padding-top:50px;"></div>
+        <div class="list"  ui-sref="app.detailgroup({groupid: '{{row.id}}'})" ui-sref-opts="{reload: true, notify: true}" ng-repeat="row in list">
             <a class="item item-thumbnail-left" >
                 <img src="images/User.png">
                 <h2>{{row.name}}</h2>

@@ -117,10 +117,6 @@ angular.module('starter.controllers', [])
 })
 
 .controller('WallCtrl', function ($scope, auth, store, $state, $http, Session) {
-    document.addEventListener("deviceready", onDeviceReady, false);
-    function onDeviceReady() {
-        console.log(FileTransfer);
-    }
 
     var url_base = store.get('url_base');
     var session = store.get('session');
@@ -143,6 +139,16 @@ angular.module('starter.controllers', [])
     }, function errorCallback(response) {
 
     });
+
+    document.addEventListener("deviceready", onDeviceReady, false);
+    function onDeviceReady() {
+
+        var pictureSource = navigator.camera.PictureSourceType;
+        var destinationType = navigator.camera.DestinationType;
+
+        store.set('pictureSource', pictureSource);
+        store.set('destinationType', destinationType);
+    }
 })
 
 .controller('ProfileCtrl', function ($scope, $http, auth, store, $ionicPopup, Session) {
