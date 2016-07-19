@@ -6,7 +6,7 @@ angular.module('starter.controllers', [])
         auth.signin({
             closable: false,
             // This asks for the refresh token
-            // So that the user never has to log in again
+            // So that the user never has to log in againa
             authParams: {
                 scope: 'openid offline_access',
                 device: 'Mobile device'
@@ -210,6 +210,7 @@ angular.module('starter.controllers', [])
             'id': $scope.session.id
         },
     }).then(function successCallback(response) {
+        console.log(response.data);
         $scope.list = response.data;
     }, function errorCallback(response) {
 
