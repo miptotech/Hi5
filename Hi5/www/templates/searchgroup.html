@@ -1,28 +1,28 @@
-﻿<ion-view title="Add Friend to Group">
+﻿<ion-view title="Search Group">
+    <!--  -->
     <ion-content class="has-header">
         <div class="bar bar-header">
-            <button ui-sref="app.detailgroup({groupid: '{{groupid}}'})" class="button button-clear button-positive" style="padding:2px 6px 0 5px;">
+            <button ui-sref="app.message" class="button button-clear button-positive" style="padding:2px 6px 0 5px;">
                 <img src="images/Arrow.png" id="edit" width="16" height="16" alt="edit" />
             </button>
             <div class="h1 title" style="color:#ffffff;">
-                Add Friend to Group
+                Search Friends
             </div>
             <button ng-click="update_user()" class="button button-clear button-positivev" style="padding:2px 6px 0 0;">
                 <!--<i class="icon ion-plus" style="color:white;"></i>-->
                 <!--<img src="images/Icon.png" id="edit" width="16" height="16" alt="edit" />-->
             </button>
         </div>
-        <!--  -->
         <div class="list" style="padding-top:70px;">
             <!--<h3 class="groups-title">My Friends</h3>-->
             <div class="list list-inset">
                 <label class="item item-input">
                     <i class="icon ion-search placeholder-icon"></i>
-                    <input ng-change="get_users(data.search)" ng-model="data.search" type="text" placeholder="Search Friend" />
+                    <input ng-change="get_group(data.search)" ng-model="data.search" type="text" placeholder="Search Friend" />
                 </label>
             </div>
 
-            <a class="item item-thumbnail-left" href="javascript:void(0)" ng-click="add_friend(row)" ng-repeat="row in list">
+            <a class="item item-thumbnail-left" href="javascript:void(0)" ng-click="select_group(row)" ng-repeat="row in list">
                 <img src="{{row.picture}}">
                 <h2><b>{{row.name}}</b></h2>
                 <p>Select Friend</p>
@@ -31,4 +31,5 @@
 
         </div>
     </ion-content>
+
 </ion-view>

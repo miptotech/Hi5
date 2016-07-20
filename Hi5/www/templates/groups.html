@@ -20,8 +20,8 @@
             </button>
         </div>
         <div style="padding-top:50px;"></div>
-        <div class="list"  ui-sref="app.detailgroup({groupid: '{{row.id}}'})" ui-sref-opts="{reload: true, notify: true}" ng-repeat="row in list">
-            <a class="item item-thumbnail-left" >
+        <div class="list"  ui-sref="app.groupwall({groupid: '{{row.id}}'})" ng-repeat="row in list">
+            <a class="item item-thumbnail-left" href="javascript:void(0)" >
                 <img src="{{row.picture}}">
                 <h2>{{row.name}}</h2>
                 <p>{{row.description}}</p>

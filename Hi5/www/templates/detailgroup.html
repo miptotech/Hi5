@@ -1,7 +1,7 @@
 ﻿<ion-view title="Detail Group">
     <ion-content class="has-header">
         <div class="bar bar-header">
-            <button ui-sref="app.groups" class="button button-clear button-positive" style="padding:2px 6px 0 5px;">
+            <button ui-sref="app.groupwall({groupid: '{{groupid}}'})" class="button button-clear button-positive" style="padding:2px 6px 0 5px;">
                 <img src="images/Arrow.png" id="edit" width="16" height="16" alt="edit" />
             </button>
             <div class="h1 title" style="color:#ffffff;">
@@ -34,7 +34,7 @@
             <li ng-show="admin.id == session.id" class="item">
                 Add Member
                 <span class="item-note">
-                    <a class="button button-icon icon ion-plus" ui-sref="app.addfriendgroup({groupid: '{{groupid}}'})" ui-sref-opts="{reload: true, notify: true}"></a>
+                    <a class="button button-icon icon ion-plus" ui-sref="app.addfriendgroup({groupid: '{{groupid}}'})"></a>
                 </span>
             </li>
         </ul>

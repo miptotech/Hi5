@@ -18,11 +18,11 @@
             <div class="list list-inset">
                 <label class="item item-input">
                     <i class="icon ion-search placeholder-icon"></i>
-                    <input ng-keypress="get_users($event,data.search)" ng-model="data.search" type="text" placeholder="Search Friend" />
+                    <input ng-change="get_users(data.search)" ng-model="data.search" type="text" placeholder="Search Friend" />
                 </label>
             </div>
 
-            <a class="item item-thumbnail-left" href="#" ng-click="add_friend(row)" ng-repeat="row in list">
+            <a class="item item-thumbnail-left" href="javascritp:void(0)" ng-click="add_friend(row)" ng-repeat="row in list">
                 <img src="{{row.picture}}">
                 <h2><b>{{row.name}}</b></h2>
                 <p>Add Friend</p>

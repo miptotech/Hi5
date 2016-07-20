@@ -16,7 +16,7 @@
                 <div class="row">
                     <div ng-show="friend.picture == ''" class="col col-25" style=""><img src="images/User.png" width="52" height="52"></div>
                     <div ng-show="friend.picture != ''" class="col col-25" style=""><img src="{{friend.picture}}" width="52" height="52"></div>
-                    <div ng-show="friend.name == ''" class="col col-40" style="padding-top:20px;text-align:left;font-size:16px;">Search User</div>
+                    <div ng-show="friend.name == ''" class="col col-40" style="padding-top:20px;text-align:left;font-size:16px;">User or Group</div>
                     <div ng-show="friend.name != ''" class="col col-40" style="padding-top:20px;text-align:left;font-size:16px;">{{friend.name}}</div>
                     <div class="col col-35" style=""><ion-checkbox class="item item-checkbox  checkbox-calm" ng-model="msg.hi5_check">Hi-5</ion-checkbox></div>
                 </div>
@@ -28,6 +28,7 @@
                 <div class="item item-divider" style="background:#fff;">
                     <div class="row">
                         <a ui-sref="app.searchfriend" class="button button-icon icon ion-ios-person-outline"></a>
+                        <a ui-sref="app.searchgroup" class="button button-icon icon ion-ios-people-outline"></a>
                         <a class="button button-icon icon ion-ios-camera-outline"></a>
                         <!--<div class="col col-20"><img src="images/User.png" width="32" height="32"></div>
                         <div class="col col-20"><img src="images/User.png" width="32" height="32"></div>-->

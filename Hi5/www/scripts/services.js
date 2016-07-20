@@ -16,7 +16,8 @@
     var friend = {
         id: null,
         name: '',
-        picture: ''
+        picture: '',
+        isUser: true
     }
 
     function set(value, field) {

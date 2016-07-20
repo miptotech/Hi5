@@ -1,5 +1,5 @@
 
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'auth0', 'angular-storage', 'angular-jwt'])
+angular.module('starter', ['ionic', 'angular-storage', 'angular-jwt', 'auth0', 'starter.controllers', 'starter.services'])
 
 .run(function ($ionicPlatform) {
     $ionicPlatform.ready(function () {
@@ -12,7 +12,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     //}
 })
 
-.config(function ($stateProvider, $urlRouterProvider, authProvider, jwtInterceptorProvider, $httpProvider) {
+.config(function ($stateProvider, $urlRouterProvider, authProvider, jwtInterceptorProvider, $httpProvider, $ionicConfigProvider) {
+    $ionicConfigProvider.views.maxCache(0);
     $stateProvider
         .state('init', {
             url: "/init",
@@ -147,7 +148,28 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
                     controller: 'AddFriendGroupCtrl'
                 }
             }
+        })
+
+        .state('app.groupwall', {
+            url: '/groupwall?groupid',
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/groupwall.html",
+                    controller: 'GroupWallCtrl'
+                }
+            }
+        })
+
+        .state('app.searchgroup', {
+            url: '/searchgroup',
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/searchgroup.html",
+                    controller: 'SearchGroupCtrl'
+                }
+            }
         });
+
     // if none of the above states are matched, use this as the fallback
     //$urlRouterProvider.otherwise('/init');
     $urlRouterProvider.otherwise('/app/wall');
