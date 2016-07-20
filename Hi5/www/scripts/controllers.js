@@ -146,6 +146,8 @@ angular.module('starter.controllers', [])
         var pictureSource = navigator.camera.PictureSourceType;
         var destinationType = navigator.camera.DestinationType;
 
+        console.log(destinationType);
+
         store.set('pictureSource', pictureSource);
         store.set('destinationType', destinationType);
     }
@@ -216,7 +218,6 @@ angular.module('starter.controllers', [])
             'id': $scope.session.id
         },
     }).then(function successCallback(response) {
-        console.log(response.data);
         $scope.list = response.data;
     }, function errorCallback(response) {
 
@@ -435,16 +436,53 @@ angular.module('starter.controllers', [])
         picture: ""
     }
 
+    $scope.showPreview = false;
+
+    $scope.pictureSource = store.get('pictureSource');
+    $scope.destinationType = store.get('destinationType');
+
+    $scope.getPhoto = function () {
+        navigator.camera.getPicture(function (imageURI) {
+            // Show the selected image
+            $scope.data.picture = imageURI;
+            $scope.showPreview = true;
+            $scope.$apply();
+
+        }, function (message) {
+            console.log('Failed because: ' + message);
+        }, {
+            quality: 50,
+            destinationType: $scope.destinationType.FILE_URI,
+            sourceType: $scope.pictureSource.PHOTOLIBRARY
+        });
+    }
+
     $scope.addGroup = function () {
-        $http({
-            method: 'GET',
-            url: url_base + 'post_add_group.php',
-            params: {
-                'user_id': $scope.session.id,
-                'name': $scope.data.name,
-                'description': $scope.data.description
-            },
-        }).then(function successCallback(response) {
+
+        //set upload options
+        var options = new FileUploadOptions();
+        options.fileKey = "file";
+        options.fileName = $scope.data.picture.substr($scope.data.picture.lastIndexOf('/') + 1);
+        options.mimeType = "image/jpeg";
+
+        options.httpMethod = "POST";
+        options.headers = {
+            Connection: "close"
+        };
+
+        options.params = {
+            'user_id': $scope.session.id,
+            'name': $scope.data.name,
+            'description': $scope.data.description
+        }
+
+        var ft = new FileTransfer();
+
+        ft.upload($scope.data.picture, url_base + 'post_add_group_with_image.php', function (r) {
+            console.log("Code = " + r.responseCode);
+            console.log("Response = " + r.response);
+            console.log("Sent = " + r.bytesSent);
+
             var alertPopup = $ionicPopup.alert({
                 title: 'Group Created!',
                 template: 'Successfully!'
@@ -453,9 +491,32 @@ angular.module('starter.controllers', [])
                 //$state.go('app.wall', {}, { reload: true });
                 $state.transitionTo('app.groups', {}, { reload: true, notify: true });
             });
-        }, function errorCallback(response) {
+        }, function (error) {
+            alert("An error has occurred: Code = " + error.code);
+            console.log("upload error source " + error.source);
+            console.log("upload error target " + error.target);
+        }, options);
 
-        });
+        //$http({
+        //    method: 'GET',
+        //    url: url_base + 'post_add_group.php',
+        //    params: {
+        //        'user_id': $scope.session.id,
+        //        'name': $scope.data.name,
+        //        'description': $scope.data.description
+        //    },
+        //}).then(function successCallback(response) {
+        //    var alertPopup = $ionicPopup.alert({
+        //        title: 'Group Created!',
+        //        template: 'Successfully!'
+        //    });
+        //    alertPopup.then(function (res) {
+        //        //$state.go('app.wall', {}, { reload: true });
+        //        $state.transitionTo('app.groups', {}, { reload: true, notify: true });
+        //    });
+        //}, function errorCallback(response) {
+
+        //});
     }
     
 

@@ -19,15 +19,19 @@
                 <input ng-model="data.name" type="text">
             </label>
             <label class="item item-input">
+                <span class="input-label">Group Description</span>
+                <input ng-model="data.description" type="text">
+            </label>
+            <!--<label class="item item-input">
                 <textarea ng-model="data.description" placeholder="Description"></textarea>
-            </label>
-            <label class="item item-input">
-                <span class="input-label">Image</span>
-                <input ng-model="data.picture" type="file">
-            </label>
-            <!--<button ng-click="()" class="button button-block button-positive">
-                Add Group
-            </button>-->
+            </label>-->
+            <div class="row">
+                <div class="col col-33 col-offset-33">
+                    <button class="button button-small button-positive" style="" ng-click="getPhoto();">Select Photo</button>
+                </div>
+            </div>
+            
+            <img ng-show="showPreview" class="full-image" src="{{data.picture}}">
         </div>
     </ion-content>
 </ion-view>
