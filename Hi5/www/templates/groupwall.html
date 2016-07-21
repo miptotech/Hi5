@@ -1,6 +1,6 @@
 ﻿<ion-view title="Group Wall">
-    <ion-content id="content-wall" class="has-header">
-        <div class="bar bar-header">
+    <ion-content>
+        <div class="bar bar-header" style="margin-top:44px;">
             <button ui-sref="app.groups" class="button button-clear button-positive" style="padding:2px 6px 0 5px;">
                 <img src="images/Arrow.png" id="edit" width="16" height="16" alt="edit" />
             </button>
@@ -12,22 +12,24 @@
                 <!--<img src="images/Icon.png" id="edit" width="16" height="16" alt="edit" />-->
             </button>
         </div>
-        <div ng-show="list.length === 0" style="color: #777; font-size:28px; color:white; font-weight:bold; text-align:center; padding-top: 100px;">
+        <div style="padding-top:80px;"></div>
+        <div ng-show="list.length === 0" style="color: #777; font-size:28px; color:white; font-weight:bold; text-align:center;">
             There's no Hi5 :(
         </div>
-        <div class="list card" ng-repeat="row in list" style="padding-top: 50px;">
+        <div class="list card" ng-repeat="row in list">
             <div class="item item-avatar">
                 <img src="images/User.png">
                 <h2>{{row.name}}</h2>
                 <p>November 05, 1955</p>
             </div>
             <div class="item item-body">
+                <img ng-show="row.picture" class="full-image" src="{{row.picture}}" height="200" alt="perfil" />
                 <p>
                     {{row.message}}
                 </p>
                 <p>
-                    <a href="javascript:void(0)" class="subdued">1 Hi5</a>
-                    <a href="javascript:void(0)" menu-close ui-sref="app.comment({postid: '{{row.id}}'})" class="subdued">5 Comments</a>
+                    <a href="javascript:void(0)" class="subdued" ng-click="toggleLike(row)">{{row.likes}} Hi5</a>
+                    <a href="javascript:void(0)" menu-close ui-sref="app.comment({postid: '{{row.id}}'})" class="subdued">{{row.comments}} Comments</a>
                 </p>
             </div>
         </div>

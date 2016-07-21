@@ -12,6 +12,7 @@ angular.module('starter.controllers', [])
                 device: 'Mobile device'
             }
         }, function (profile, idToken, accessToken, state, refreshToken) {
+
             store.set('profile', profile);
             store.set('token', idToken);
             store.set('refreshToken', refreshToken);
@@ -53,6 +54,8 @@ angular.module('starter.controllers', [])
 
                     });
                 } else {
+                    console.log(profile.email);
+
                     $http({
                         method: 'GET',
                         url: url_base+'get_user_info.php',
@@ -60,6 +63,7 @@ angular.module('starter.controllers', [])
                             'email': profile.email
                         },
                     }).then(function successCallback(response) {
+                        console.log("pass login");
                         store.remove('session');
                         var session = {
                             'id': response.data.id,
@@ -78,11 +82,12 @@ angular.module('starter.controllers', [])
                         Session.set(response.data.gender, 'gender');
                         Session.set(response.data.birthday, 'birthday');
 
-                    }, function errorCallback(response) {
+                        $state.go('app.wall');
 
+                    }, function errorCallback(response) {
+                        console.log("algo paso");
                     });
 
-                    $state.go('app.wall');
                 }
             }, function errorCallback(response) {
 
@@ -117,10 +122,12 @@ angular.module('starter.controllers', [])
 })
 
 .controller('WallCtrl', function ($scope, auth, store, $state, $http, Session) {
+    console.log("pass Wall");
 
     var url_base = store.get('url_base');
     var session = store.get('session');
     //$scope.session = store.get('session');
+
     $scope.session = Session.value;
 
     $scope.list = [];
@@ -133,12 +140,59 @@ angular.module('starter.controllers', [])
         },
     }).then(function successCallback(response) {
         if (response.data !== "null") {
-            //console.log(response.data);
             $scope.list = response.data;
+            angular.forEach($scope.list, function (value, key) {
+                value.likes = 0;
+                value.comments = 0;
+            });
         }
     }, function errorCallback(response) {
 
     });
+
+    $scope.toggleLike = function (row) {
+        $http({
+            method: 'GET',
+            url: url_base + 'get_like_user.php',
+            params: {
+                'user_id': session.id,
+                'post_id': row.id
+            },
+        }).then(function successCallback(response) {
+            if (response.data === "null") {
+                $http({
+                    method: 'POST',
+                    url: url_base + 'post_add_like.php',
+                    data: {
+                        'user_id': session.id,
+                        'post_id': row.id
+                    },
+                }).then(function successCallback(response) {
+                    row.likes += 1;
+                }, function errorCallback(response) {
+
+                });
+            } else {
+                $http({
+                    method: 'POST',
+                    url: url_base + 'put_toggle_like.php',
+                    data: {
+                        'user_id': session.id,
+                        'post_id': row.id
+                    },
+                }).then(function successCallback(response) {
+                    if (response.data !== "-")
+                        row.likes += 1;
+                    else
+                        row.likes -= 1;
+                }, function errorCallback(response) {
+
+                });
+            }
+        }, function errorCallback(response) {
+
+        });
+    }
 
     document.addEventListener("deviceready", onDeviceReady, false);
     function onDeviceReady() {
@@ -146,19 +200,26 @@ angular.module('starter.controllers', [])
         var pictureSource = navigator.camera.PictureSourceType;
         var destinationType = navigator.camera.DestinationType;
 
-        console.log(destinationType);
+        //console.log(destinationType);
 
         store.set('pictureSource', pictureSource);
         store.set('destinationType', destinationType);
     }
 })
 
-.controller('ProfileCtrl', function ($scope, $http, auth, store, $ionicPopup, Session) {
+.controller('ProfileCtrl', function ($scope, $http, auth, store, $ionicPopup, Session, $state) {
     var url_base = store.get('url_base');
     //$scope.session = store.get('session');
     $scope.session = Session.value;
 
     $scope.editable = false;
+
+    $scope.pictureSource = store.get('pictureSource');
+    $scope.destinationType = store.get('destinationType');
+
+    $scope.data = {
+        preview: ""
+    };
 
     if ($scope.session.gender === "F") {
         $scope.genderName = "Female";
@@ -177,31 +238,91 @@ angular.module('starter.controllers', [])
             $scope.session.gender = "M";
         }
     }
+
+    $scope.getPhoto = function () {
+        navigator.camera.getPicture(function (imageURI) {
+            // Show the selected image
+            $scope.data.preview = imageURI;
+            $scope.$apply();
+
+        }, function (message) {
+            console.log('Failed because: ' + message);
+        }, {
+            quality: 50,
+            destinationType: $scope.destinationType.FILE_URI,
+            sourceType: $scope.pictureSource.PHOTOLIBRARY
+        });
+    }
+
     $scope.update_user = function () {
-        
-        $http({
-            method: 'GET',
-            url: url_base + 'put_user_update.php',
-            params: {
-                'email': $scope.session.email,
+
+        if ($scope.data.preview) {
+            //set upload options
+            var options = new FileUploadOptions();
+            options.fileKey = "file";
+            options.fileName = $scope.data.preview.substr($scope.data.preview.lastIndexOf('/') + 1);
+            options.mimeType = "image/jpeg";
+
+            options.httpMethod = "POST";
+            options.headers = {
+                Connection: "close"
+            };
+
+            options.params = {
+                'id': $scope.session.id,
                 'name': $scope.session.name,
                 'gender': $scope.session.gender,
                 'birthday': $scope.session.birthday
-            },
-        }).then(function successCallback(response) {
-            var alertPopup = $ionicPopup.alert({
-                title: 'Profile Updated!',
-                template: 'Profile Update!'
-            });
-            alertPopup.then(function (res) {
-                store.set('session', $scope.session);
-                //Session.set(profile.name, 'name');
-                //Session.set(profile.email, 'email');
-                //Service.set(profile.picture, 'picture');
-            });
-        }, function errorCallback(response) {
+            }
 
-        });
+            var ft = new FileTransfer();
+
+            ft.upload($scope.data.preview, url_base + 'put_user_update.php', function (r) {
+                console.log("Code = " + r.responseCode);
+                console.log("Response = " + r.response);
+                console.log("Sent = " + r.bytesSent);
+
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Group Created!',
+                    template: 'Successfully!'
+                });
+                alertPopup.then(function (res) {
+                    $scope.session.picture = $scope.data.preview;
+                    $scope.data.preview = "";
+                    //$state.go('app.groups', {}, {});
+                    //$state.transitionTo('app.groups', {}, { reload: true, notify: true });
+                });
+            }, function (error) {
+                alert("An error has occurred: Code = " + error.code);
+                console.log("upload error source " + error.source);
+                console.log("upload error target " + error.target);
+            }, options);
+        
+        } else {
+            $http({
+                method: 'GET',
+                url: url_base + 'put_user_update.php',
+                data: {
+                    'id': $scope.session.id,
+                    'name': $scope.session.name,
+                    'gender': $scope.session.gender,
+                    'birthday': $scope.session.birthday
+                },
+            }).then(function successCallback(response) {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Profile Updated!',
+                    template: 'Profile Update!'
+                });
+                alertPopup.then(function (res) {
+                    store.set('session', $scope.session);
+                    //Session.set(profile.name, 'name');
+                    //Session.set(profile.email, 'email');
+                    //Service.set(profile.picture, 'picture');
+                });
+            }, function errorCallback(response) {
+
+            });
+        }
     }
 })
 
@@ -278,7 +399,7 @@ angular.module('starter.controllers', [])
                 'idFriend': row.id
             },
         }).then(function successCallback(response) {
-            console.log(response);
+            //console.log(response);
             var alertPopup = $ionicPopup.alert({
                 title: 'Friend Added!',
                 template: 'Successfully!'
@@ -325,7 +446,7 @@ angular.module('starter.controllers', [])
         Session.select_friend(row.email, 'email');
         Session.select_friend(row.name, 'name');
         Session.select_friend(row.picture, 'picture');
-        Session.select_friend(row.isUser, true);
+        Session.select_friend(true, 'isUser');
 
         $state.go('app.message');
     }
@@ -364,13 +485,13 @@ angular.module('starter.controllers', [])
         Session.select_friend(row.email, '');
         Session.select_friend(row.name, 'name');
         Session.select_friend(row.picture, 'picture');
-        Session.select_friend(row.isUser, false);
+        Session.select_friend(false, 'isUser');
 
         $state.go('app.message');
     }
 })
 
-.controller('MessageCtrl', function ($scope, $http, store, $state, $ionicPopup, Session) {
+.controller('MessageCtrl', function ($scope, $http, store, $state, $ionicPopup, Session, $ionicHistory) {
     var url_base = store.get('url_base');
     //$scope.session = store.get('session');
     $scope.session = Session.value;
@@ -384,53 +505,162 @@ angular.module('starter.controllers', [])
         url_img : ""
     };
 
+    $ionicHistory.nextViewOptions({
+        disableBack: true
+    });
+
+    $scope.pictureSource = store.get('pictureSource');
+    $scope.destinationType = store.get('destinationType');
+
+    $scope.getPhoto = function () {
+        navigator.camera.getPicture(function (imageURI) {
+            // Show the selected image
+            $scope.msg.url_img = imageURI;
+            $scope.$apply();
+
+        }, function (message) {
+            console.log('Failed because: ' + message);
+        }, {
+            quality: 50,
+            destinationType: $scope.destinationType.FILE_URI,
+            sourceType: $scope.pictureSource.PHOTOLIBRARY
+        });
+    }
+
     $scope.post_message = function () {
         if (Session.friend.isUser) {
-            $http({
-                method: 'GET',
-                url: url_base + 'post_add_post.php',
-                params: {
+            //set upload options
+            if ($scope.msg.url_img) {
+
+                var options = new FileUploadOptions();
+                options.fileKey = "file";
+                options.fileName = $scope.msg.url_img.substr($scope.msg.url_img.lastIndexOf('/') + 1);
+                options.mimeType = "image/jpeg";
+
+                options.httpMethod = "POST";
+                options.headers = {
+                    Connection: "close"
+                };
+
+                options.params = {
                     'id': $scope.session.id,
                     'idFriend': Session.friend.id,
                     'hi5_check': $scope.msg.hi5_check,
                     'message': $scope.msg.message
-                },
-            }).then(function successCallback(response) {
-                //console.log(response);
-                var alertPopup = $ionicPopup.alert({
-                    title: 'Message Added!',
-                    template: 'Successfully!'
-                });
-                alertPopup.then(function (res) {
-                    $state.go('app.wall', {}, {});
-                    //$state.transitionTo('app.wall', {}, { reload: true, notify: true });
-                });
-            }, function errorCallback(response) {
+                }
 
-            });
+                var ft = new FileTransfer();
+
+                ft.upload($scope.msg.url_img, url_base + 'post_add_post.php', function (r) {
+                    console.log("Code = " + r.responseCode);
+                    console.log("Response = " + r.response);
+                    console.log("Sent = " + r.bytesSent);
+
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Message Added!',
+                        template: 'Successfully!'
+                    });
+                    alertPopup.then(function (res) {
+                        $state.go('app.wall', {}, {});
+                        //$state.transitionTo('app.groups', {}, { reload: true, notify: true });
+                    });
+                }, function (error) {
+                    alert("An error has occurred: Code = " + error.code);
+                    console.log("upload error source " + error.source);
+                    console.log("upload error target " + error.target);
+                }, options);
+                
+            } else {
+                $http({
+                    method: 'POST',
+                    url: url_base + 'post_add_post.php',
+                    data: {
+                        'id': $scope.session.id,
+                        'idFriend': Session.friend.id,
+                        'hi5_check': $scope.msg.hi5_check,
+                        'message': $scope.msg.message
+                    },
+                }).then(function successCallback(response) {
+                    console.log(response);
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Message Added!',
+                        template: 'Successfully!'
+                    });
+                    alertPopup.then(function (res) {
+                        $state.go('app.wall');
+                        //$state.transitionTo('app.wall', {}, { reload: true, notify: true });
+                    });
+                }, function errorCallback(response) {
+
+                });
+
+            }
         } else {
-            $http({
-                method: 'GET',
-                url: url_base + 'post_add_group_post.php',
-                params: {
+            //set upload options
+            if ($scope.msg.url_img) {
+
+                var options = new FileUploadOptions();
+                options.fileKey = "file";
+                options.fileName = $scope.msg.url_img.substr($scope.msg.url_img.lastIndexOf('/') + 1);
+                options.mimeType = "image/jpeg";
+
+                options.httpMethod = "POST";
+                options.headers = {
+                    Connection: "close"
+                };
+
+                options.params = {
                     'id': $scope.session.id,
                     'group_id': Session.friend.id,
                     'hi5_check': $scope.msg.hi5_check,
                     'message': $scope.msg.message
-                },
-            }).then(function successCallback(response) {
-                //console.log(response);
-                var alertPopup = $ionicPopup.alert({
-                    title: 'Message Added!',
-                    template: 'Successfully!'
-                });
-                alertPopup.then(function (res) {
-                    $state.go('app.wall', {}, {});
-                    //$state.transitionTo('app.wall', {}, { reload: true, notify: true });
-                });
-            }, function errorCallback(response) {
+                }
 
-            });
+                var ft = new FileTransfer();
+
+                ft.upload($scope.msg.url_img, url_base + 'post_add_group_post.php', function (r) {
+                    console.log("Code = " + r.responseCode);
+                    console.log("Response = " + r.response);
+                    console.log("Sent = " + r.bytesSent);
+
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Message Added!',
+                        template: 'Successfully!'
+                    });
+                    alertPopup.then(function (res) {
+                        $state.go('app.wall', {}, {});
+                        //$state.transitionTo('app.groups', {}, { reload: true, notify: true });
+                    });
+                }, function (error) {
+                    alert("An error has occurred: Code = " + error.code);
+                    console.log("upload error source " + error.source);
+                    console.log("upload error target " + error.target);
+                }, options);
+
+            } else {
+                $http({
+                    method: 'POST',
+                    url: url_base + 'post_add_group_post.php',
+                    data: {
+                        'id': $scope.session.id,
+                        'group_id': Session.friend.id,
+                        'hi5_check': $scope.msg.hi5_check,
+                        'message': $scope.msg.message
+                    },
+                }).then(function successCallback(response) {
+                    //console.log(response);
+                    var alertPopup = $ionicPopup.alert({
+                        title: 'Message Added!',
+                        template: 'Successfully!'
+                    });
+                    alertPopup.then(function (res) {
+                        $state.go('app.wall');
+                        //$state.transitionTo('app.wall', {}, { reload: true, notify: true });
+                    });
+                }, function errorCallback(response) {
+
+                });
+            }
         }
     }
 })
@@ -528,65 +758,66 @@ angular.module('starter.controllers', [])
     }
 
     $scope.addGroup = function () {
+        if ($scope.data.picture) {
+            //set upload options
+            var options = new FileUploadOptions();
+            options.fileKey = "file";
+            options.fileName = $scope.data.picture.substr($scope.data.picture.lastIndexOf('/') + 1);
+            options.mimeType = "image/jpeg";
 
-        //set upload options
-        var options = new FileUploadOptions();
-        options.fileKey = "file";
-        options.fileName = $scope.data.picture.substr($scope.data.picture.lastIndexOf('/') + 1);
-        options.mimeType = "image/jpeg";
+            options.httpMethod = "POST";
+            options.headers = {
+                Connection: "close"
+            };
 
-        options.httpMethod = "POST";
-        options.headers = {
-            Connection: "close"
-        };
+            options.params = {
+                'user_id': $scope.session.id,
+                'name': $scope.data.name,
+                'description': $scope.data.description
+            }
 
-        options.params = {
-            'user_id': $scope.session.id,
-            'name': $scope.data.name,
-            'description': $scope.data.description
+            var ft = new FileTransfer();
+
+            ft.upload($scope.data.picture, url_base + 'post_add_group_with_image.php', function (r) {
+                console.log("Code = " + r.responseCode);
+                console.log("Response = " + r.response);
+                console.log("Sent = " + r.bytesSent);
+
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Group Created!',
+                    template: 'Successfully!'
+                });
+                alertPopup.then(function (res) {
+                    $state.go('app.groups', {}, {});
+                    //$state.transitionTo('app.groups', {}, { reload: true, notify: true });
+                });
+            }, function (error) {
+                alert("An error has occurred: Code = " + error.code);
+                console.log("upload error source " + error.source);
+                console.log("upload error target " + error.target);
+            }, options);
+        } else {
+            $http({
+                method: 'POST',
+                url: url_base + 'post_add_group.php',
+                data: {
+                    'user_id': $scope.session.id,
+                    'name': $scope.data.name,
+                    'description': $scope.data.description
+                },
+            }).then(function successCallback(response) {
+                var alertPopup = $ionicPopup.alert({
+                    title: 'Group Created!',
+                    template: 'Successfully!'
+                });
+                alertPopup.then(function (res) {
+                    //$state.go('app.wall', {}, { reload: true });
+                    $state.transitionTo('app.groups', {}, { reload: true, notify: true });
+                });
+            }, function errorCallback(response) {
+
+            });
         }
-
-        var ft = new FileTransfer();
-
-        ft.upload($scope.data.picture, url_base + 'post_add_group_with_image.php', function (r) {
-            console.log("Code = " + r.responseCode);
-            console.log("Response = " + r.response);
-            console.log("Sent = " + r.bytesSent);
-
-            var alertPopup = $ionicPopup.alert({
-                title: 'Group Created!',
-                template: 'Successfully!'
-            });
-            alertPopup.then(function (res) {
-                $state.go('app.groups', {}, {});
-                //$state.transitionTo('app.groups', {}, { reload: true, notify: true });
-            });
-        }, function (error) {
-            alert("An error has occurred: Code = " + error.code);
-            console.log("upload error source " + error.source);
-            console.log("upload error target " + error.target);
-        }, options);
-
-        //$http({
-        //    method: 'GET',
-        //    url: url_base + 'post_add_group.php',
-        //    params: {
-        //        'user_id': $scope.session.id,
-        //        'name': $scope.data.name,
-        //        'description': $scope.data.description
-        //    },
-        //}).then(function successCallback(response) {
-        //    var alertPopup = $ionicPopup.alert({
-        //        title: 'Group Created!',
-        //        template: 'Successfully!'
-        //    });
-        //    alertPopup.then(function (res) {
-        //        //$state.go('app.wall', {}, { reload: true });
-        //        $state.transitionTo('app.groups', {}, { reload: true, notify: true });
-        //    });
-        //}, function errorCallback(response) {
-
-        //});
     }
     
 
@@ -601,21 +832,68 @@ angular.module('starter.controllers', [])
     $scope.groupid = $stateParams.groupid;
 
     $scope.list = [];
-
+    //console.log($scope.groupid);
     $http({
         method: 'GET',
         url: url_base + 'get_group_posts.php',
         params: {
-            'id': $scope.groupid
+            'group_id': $scope.groupid
         },
     }).then(function successCallback(response) {
         if (response.data !== "null") {
-            //console.log(response.data);
             $scope.list = response.data;
+            angular.forEach($scope.list, function (value, key) {
+                value.likes = 0;
+                value.comments = 0;
+            });
         }
     }, function errorCallback(response) {
 
     });
+
+    $scope.toggleLike = function (row) {
+        $http({
+            method: 'GET',
+            url: url_base + 'get_like_user.php',
+            params: {
+                'user_id': session.id,
+                'post_id': row.id
+            },
+        }).then(function successCallback(response) {
+            if (response.data === "null") {
+                $http({
+                    method: 'POST',
+                    url: url_base + 'post_add_like.php',
+                    data: {
+                        'user_id': session.id,
+                        'post_id': row.id
+                    },
+                }).then(function successCallback(response) {
+                    row.likes += 1;
+                }, function errorCallback(response) {
+
+                });
+            } else {
+                $http({
+                    method: 'POST',
+                    url: url_base + 'put_toggle_like.php',
+                    data: {
+                        'user_id': session.id,
+                        'post_id': row.id
+                    },
+                }).then(function successCallback(response) {
+                    if (response.data !== "-")
+                        row.likes += 1;
+                    else
+                        row.likes -= 1;
+                }, function errorCallback(response) {
+
+                });
+            }
+        }, function errorCallback(response) {
+
+        });
+    }
 })
 
 .controller('DetailGroupCtrl', function ($scope, $http, store, $state, $ionicPopup, Session, $stateParams) {//terminar
@@ -707,7 +985,7 @@ angular.module('starter.controllers', [])
                 'friend_id': row.id
             },
         }).then(function successCallback(response) {
-            console.log(response);
+            //console.log(response);
             var alertPopup = $ionicPopup.alert({
                 title: 'Friend Added!',
                 template: 'Successfully!'

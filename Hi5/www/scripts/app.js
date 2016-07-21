@@ -2,6 +2,8 @@
 angular.module('starter', ['ionic', 'angular-storage', 'angular-jwt', 'auth0', 'starter.controllers', 'starter.services'])
 
 .run(function ($ionicPlatform) {
+    //console.log("pass run 1");
+
     $ionicPlatform.ready(function () {
         if (window.StatusBar) {
             StatusBar.styleDefault();
@@ -13,6 +15,8 @@ angular.module('starter', ['ionic', 'angular-storage', 'angular-jwt', 'auth0', '
 })
 
 .config(function ($stateProvider, $urlRouterProvider, authProvider, jwtInterceptorProvider, $httpProvider, $ionicConfigProvider) {
+   // console.log("pass config");
+
     $ionicConfigProvider.views.maxCache(0);
     $stateProvider
         .state('init', {
@@ -199,6 +203,30 @@ angular.module('starter', ['ionic', 'angular-storage', 'angular-jwt', 'auth0', '
     }
 
     $httpProvider.interceptors.push('jwtInterceptor');
+    //---------------------------------------------------------------------------
+    //Replacement of jQuery.param
+    var serialize = function (obj, prefix) {
+        var str = [];
+        for (var p in obj) {
+            if (obj.hasOwnProperty(p)) {
+                var k = prefix ? prefix + "[" + p + "]" : p, v = obj[p];
+                str.push(typeof v == "object" ?
+                  serialize(v, k) :
+                  encodeURIComponent(k) + "=" + encodeURIComponent(v));
+            }
+        }
+        return str.join("&");
+    };
+
+    $httpProvider.defaults.transformRequest = function (data) {
+        if (data === undefined) {
+            return data;
+        }
+        return serialize(data);
+    };
+    // set all post requests content type
+    $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded; charset=UTF-8';
+
 }).run(function ($rootScope, auth, store, jwtHelper, $location, $state, $http, Session) {
     //var url_base = "http://localhost/hi5/";
     var url_base = "http://mipto.com/hi5/";
@@ -207,6 +235,8 @@ angular.module('starter', ['ionic', 'angular-storage', 'angular-jwt', 'auth0', '
     //This hooks all auth avents
     auth.hookEvents();
     var refreshingToken = null;
+
+    //console.log("pass run 2");
     $rootScope.$on('$locationChangeStart', function () {
         var token = store.get('token');
         var refreshToken = store.get('refreshToken');
@@ -238,7 +268,11 @@ angular.module('starter', ['ionic', 'angular-storage', 'angular-jwt', 'auth0', '
                         Session.set(response.data.picture, 'picture');
                         Session.set(response.data.gender, 'gender');
                         Session.set(response.data.birthday, 'birthday');
+
+                        $state.go('app.wall');
+
                     }, function errorCallback(response) {
+
 
                     });
                 }
@@ -272,6 +306,9 @@ angular.module('starter', ['ionic', 'angular-storage', 'angular-jwt', 'auth0', '
                                 Session.set(response.data.picture, 'picture');
                                 Session.set(response.data.gender, 'gender');
                                 Session.set(response.data.birthday, 'birthday');
+
+                                $state.go('wall');
+
                             }, function errorCallback(response) {
 
                             });
@@ -287,6 +324,7 @@ angular.module('starter', ['ionic', 'angular-storage', 'angular-jwt', 'auth0', '
             }
         }
     });
+
     //$rootScope.$on('$locationChangeStart', function () {
     //    if (!auth.isAuthenticated) {
     //        var token = store.get('token');

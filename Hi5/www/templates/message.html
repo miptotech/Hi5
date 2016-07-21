@@ -22,20 +22,25 @@
                 </div>
                 <div class="item item-text-wrap">
                     <ion-item>
-                        <div class="item-inner"><div class="input-wrapper"><!--template bindings={}--><textarea ng-model="msg.message" rows="18" class="text-input ng-untouched ng-pristine ng-valid" style="width:100%;height: auto;" placeholder="what are you thinking?" autocomplete="off" autocorrect="off"></textarea></div></div>
+                        <div class="item-inner">
+                            <div class="input-wrapper">
+                                <textarea ng-model="msg.message" rows="4" class="text-input ng-untouched ng-pristine ng-valid" style="width:100%;height: auto;" placeholder="what are you thinking?" autocomplete="off" autocorrect="off"></textarea>
+                                <img ng-show="msg.url_img" src="{{msg.url_img}}" ng-click="" id="logo" width="150" height="150" alt="perfil" />
+                            </div>
+                        </div>
                     </ion-item>
                 </div>
                 <div class="item item-divider" style="background:#fff;">
                     <div class="row">
                         <a ui-sref="app.searchfriend" class="button button-icon icon ion-ios-person-outline"></a>
                         <a ui-sref="app.searchgroup" class="button button-icon icon ion-ios-people-outline"></a>
-                        <a class="button button-icon icon ion-ios-camera-outline"></a>
+                        <a ng-click="getPhoto();" class="button button-icon icon ion-ios-camera-outline"></a>
                         <!--<div class="col col-20"><img src="images/User.png" width="32" height="32"></div>
                         <div class="col col-20"><img src="images/User.png" width="32" height="32"></div>-->
                         <!--<div class="col col-60" style="text-align:right;"><b style="color:#39b5f3; padding-right:10px;">to post</b> <img src="images/right_Arrow.png" width="14" height="14"></div>-->
                     </div>
                 </div>
             </div>
-        </div>     
+        </div>
     </ion-content>
 </ion-view>

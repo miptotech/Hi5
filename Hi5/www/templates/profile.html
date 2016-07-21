@@ -13,7 +13,13 @@
             </button>
         </div>
         <div class="logo-perfil-usr">
-            <img src="{{session.picture}}" id="logo" width="120" height="120" alt="perfil" />
+            <img ng-show="data.preview" src="{{data.preview}}" ng-click="" id="logo" width="120" height="120" alt="perfil" />
+            <img ng-hide="data.preview" src="{{session.picture}}" ng-click="" id="logo" width="120" height="120" alt="perfil" />
+            <div class="row">
+                <div class="col col-33 col-offset-33">
+                    <button class="button button-small button-positive" style="" ng-click="getPhoto();">Select Photo</button>
+                </div>
+            </div>
             <h2 class="perfil-usuario">{{session.name}}</h2>
             <h5 class="perfil-email">{{session.email}}</h5>
         </div>
