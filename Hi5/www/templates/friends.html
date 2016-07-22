@@ -21,10 +21,10 @@
                     <input type="text" placeholder="Search">
                 </label>
             </div>
-            <a class="item item-thumbnail-left" href="javascript:void(0)" ng-repeat="row in list">
+            <a class="item item-thumbnail-left" ng-click="userwall(row)" href="javascript:void(0)" ng-repeat="row in list">
                 <img src="{{row.picture}}">
                 <h2><b>{{row.name}}</b></h2>
-                <p>Add Friend</p>
+                <p>Profile</p>
             </a>
 
         </div>

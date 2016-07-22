@@ -5,9 +5,11 @@
         </div>
         <div class="list card"  ng-repeat="row in list">
             <div class="item item-avatar">
-                <img src="images/User.png">
+                <img class="full-image" src="{{row.upicture}}" height="200" alt="perfil" />
                 <h2>{{row.name}}</h2>
-                <p>November 05, 1955</p>
+                <p>{{row.created_at}}</p>
+                <p ng-show="row.fid" >To: <a href="javascript:void(0)" ng-click="userwall(row)">{{row.fname}}</a></p>
+                <p ng-show="row.gid">Group: <a href="javascript:void(0)" ui-sref="app.groupwall({groupid: '{{row.gid}}'})">{{row.gname}}</a></p>
             </div>
             <div class="item item-body">
                 <img ng-show="row.picture" class="full-image" src="{{row.picture}}" height="200" alt="perfil" />

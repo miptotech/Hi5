@@ -1,19 +1,15 @@
 ﻿<ion-view title="Group Wall">
     <ion-content>
         <div class="bar bar-header" style="margin-top:44px;">
-            <button ui-sref="app.groups" class="button button-clear button-positive" style="padding:2px 6px 0 5px;">
+            <button ui-sref="app.wall" class="button button-clear button-positive" style="padding:2px 6px 0 5px;">
                 <img src="images/Arrow.png" id="edit" width="16" height="16" alt="edit" />
             </button>
             <div class="h1 title" style="color:#ffffff;">
-                Group Wall
+                {{user.name}} Wall
             </div>
-            <button  ui-sref="app.detailgroup({groupid: '{{groupid}}'})" class="button button-clear button-positivev" style="padding:2px 6px 0 0;">
-                <i class="icon ion-ios-compose-outline" style="color:white;"></i>
-                <!--<img src="images/Icon.png" id="edit" width="16" height="16" alt="edit" />-->
-            </button>
         </div>
-        <div style="padding-top:80px;"></div>
-        <div ng-show="list.length === 0" style="color: #777; font-size:28px; color:white; font-weight:bold; text-align:center;">
+        <div style="padding-top:120px;"></div>
+        <div ng-show="list.length === 0" style="color: #777; font-size:28px; font-weight:bold; text-align:center;">
             There's no Hi5 :(
         </div>
         <div class="list card" ng-repeat="row in list">
@@ -21,6 +17,8 @@
                 <img class="full-image" src="{{row.upicture}}" height="200" alt="perfil" />
                 <h2>{{row.name}}</h2>
                 <p>{{row.created_at}}</p>
+                <p ng-show="row.fid">To: <a href="javascript:void(0)" ng-click="userwall(row)">{{row.fname}}</a></p>
+                <p ng-show="row.gid">Group: <a href="javascript:void(0)" ui-sref="app.groupwall({groupid: '{{row.gid}}'})">{{row.gname}}</a></p>
             </div>
             <div class="item item-body">
                 <img ng-show="row.picture" class="full-image" src="{{row.picture}}" height="200" alt="perfil" />

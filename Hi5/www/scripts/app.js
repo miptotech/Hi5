@@ -9,6 +9,9 @@ angular.module('starter', ['ionic', 'angular-storage', 'angular-jwt', 'auth0', '
             StatusBar.styleDefault();
         }
     });
+    $ionicPlatform.registerBackButtonAction(function () {
+        //navigator.app.exitApp();
+    }, 100);
     //if (window.cordova && window.cordova.plugins.Keyboard) {a
         //...
     //}
@@ -170,6 +173,16 @@ angular.module('starter', ['ionic', 'angular-storage', 'angular-jwt', 'auth0', '
                 'menuContent': {
                     templateUrl: "templates/searchgroup.html",
                     controller: 'SearchGroupCtrl'
+                }
+            }
+        })
+
+        .state('app.userwall', {
+            url: '/userwall',
+            views: {
+                'menuContent': {
+                    templateUrl: "templates/userwall.html",
+                    controller: 'UserWallCtrl'
                 }
             }
         });

@@ -1,7 +1,7 @@
 ﻿<ion-view title="Comment">
     <!--a  -->
     <ion-content class="has-header">
-        <div class="bar bar-header" >
+        <div class="bar bar-header">
             <button ui-sref="app.wall" menu-close class="button button-clear button-positive" style="padding:2px 6px 0 5px;">
                 <img src="images/Arrow.png" id="edit" width="16" height="16" alt="edit" />
             </button>
@@ -12,21 +12,26 @@
                 <img src="images/Icon.png" id="edit" width="16" height="16" alt="edit" />
             </button>
         </div>
+        <div style="padding-top:80px;"></div>
         <div ng-show="list.length === 0" style=" color: black; font-size:28px; font-weight:bold; text-align:center;">
             There's no Comments :(
         </div>
-        <div class="list" ng-repeat="row in list">
 
-            <a class="item item-text-wrap" href="javascript:void(0)">
-                <img src="images/User.png">
-                <h2>{{row.name}}</h2>
-                <p>{{row.text}}</p>
-            </a>
-
+        <div class="list">
+            <div ng-repeat="row in list">
+                <a class="item item-avatar">
+                    <img class="full-image" src="{{row.picture}}" height="200" alt="perfil" />
+                    <h2>{{row.name}}</h2>
+                    <p>{{row.created_at}}</p>
+                </a>
+                <div class="item item-body">
+                    <p>{{row.text}}</p>
+                </div>
+            </div>
         </div>
         <div class="list">
             <label class="item item-input">
-                <textarea ng-model="data.comment" placeholder="Comments"></textarea>
+                <textarea ng-model="data.comment" placeholder="Write a new Comment"></textarea>
             </label>
             <button ng-click="saveComment()" class="button button-block button-positive">
                 Save Comment

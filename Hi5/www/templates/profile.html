@@ -22,6 +22,7 @@
             </div>
             <h2 class="perfil-usuario">{{session.name}}</h2>
             <h5 class="perfil-email">{{session.email}}</h5>
+            <h5 class="perfil-email"  ng-click="userwall(session)">My Wall</h5>
         </div>
         <ul class="list">
             <li class="item">
@@ -70,7 +71,7 @@
                 </label>-->
                 <label class="item item-input">
                     <span class="input-label">Birthday</span>
-                    <input ng-model="session.birthday" ng-disabled="editable" type="date">
+                    <input ng-model="data.birthday" ng-disabled="editable" type="date">
                 </label>
                 <!--<ion-list>
                     <ion-radio ng-model="gender" ng-value="'F'">Female</ion-radio>

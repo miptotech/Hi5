@@ -141,10 +141,6 @@ angular.module('starter.controllers', [])
     }).then(function successCallback(response) {
         if (response.data !== "null") {
             $scope.list = response.data;
-            angular.forEach($scope.list, function (value, key) {
-                value.likes = 0;
-                value.comments = 0;
-            });
         }
     }, function errorCallback(response) {
 
@@ -168,7 +164,7 @@ angular.module('starter.controllers', [])
                         'post_id': row.id
                     },
                 }).then(function successCallback(response) {
-                    row.likes += 1;
+                    row.likes = parseInt(row.likes) + 1;
                 }, function errorCallback(response) {
 
                 });
@@ -182,9 +178,9 @@ angular.module('starter.controllers', [])
                     },
                 }).then(function successCallback(response) {
                     if (response.data !== "-")
-                        row.likes += 1;
+                        row.likes = parseInt(row.likes) + 1;
                     else
-                        row.likes -= 1;
+                        row.likes = parseInt(row.likes) - 1;
                 }, function errorCallback(response) {
 
                 });
@@ -192,6 +188,20 @@ angular.module('starter.controllers', [])
         }, function errorCallback(response) {
 
         });
+    }
+
+    $scope.userwall = function (row) {
+        console.log(row)
+        Session.select_friend(row.fid, 'id');
+        var username = row.fname.slice(-1);
+        if (username == "s") {
+            username = row.fname + "'";
+        } else {
+            username = row.fname + "'s";
+        }
+        Session.select_friend(username, 'name');
+
+        $state.go('app.userwall');
     }
 
     document.addEventListener("deviceready", onDeviceReady, false);
@@ -208,18 +218,27 @@ angular.module('starter.controllers', [])
 })
 
 .controller('ProfileCtrl', function ($scope, $http, auth, store, $ionicPopup, Session, $state) {
+    function pad(str, max) {
+        str = str.toString();
+        return str.length < max ? pad("0" + str, max) : str;
+    }
+
     var url_base = store.get('url_base');
     //$scope.session = store.get('session');
     $scope.session = Session.value;
+    console.log($scope.session);
+
+    $scope.data = {
+        preview: "",
+        birthday : new Date($scope.session.birthday)
+    };
 
     $scope.editable = false;
+    //$scope.birthday = new Date($scope.session.birthday);
 
     $scope.pictureSource = store.get('pictureSource');
     $scope.destinationType = store.get('destinationType');
 
-    $scope.data = {
-        preview: ""
-    };
 
     if ($scope.session.gender === "F") {
         $scope.genderName = "Female";
@@ -257,6 +276,10 @@ angular.module('starter.controllers', [])
     $scope.update_user = function () {
 
         if ($scope.data.preview) {
+            var mm = $scope.data.birthday.getMonth() + 1; // getMonth() is zero-based
+            var dd = $scope.data.birthday.getDate();
+            var datestr = $scope.data.birthday.getFullYear() + "-" + pad(mm, 2) + "-" + pad(dd, 2);
+
             //set upload options
             var options = new FileUploadOptions();
             options.fileKey = "file";
@@ -272,7 +295,7 @@ angular.module('starter.controllers', [])
                 'id': $scope.session.id,
                 'name': $scope.session.name,
                 'gender': $scope.session.gender,
-                'birthday': $scope.session.birthday
+                'birthday': datestr
             }
 
             var ft = new FileTransfer();
@@ -282,6 +305,8 @@ angular.module('starter.controllers', [])
                 console.log("Response = " + r.response);
                 console.log("Sent = " + r.bytesSent);
 
+                $scope.session.birthday = r.data;
+
                 var alertPopup = $ionicPopup.alert({
                     title: 'Group Created!',
                     template: 'Successfully!'
@@ -289,6 +314,7 @@ angular.module('starter.controllers', [])
                 alertPopup.then(function (res) {
                     $scope.session.picture = $scope.data.preview;
                     $scope.data.preview = "";
+                   
                     //$state.go('app.groups', {}, {});
                     //$state.transitionTo('app.groups', {}, { reload: true, notify: true });
                 });
@@ -299,16 +325,23 @@ angular.module('starter.controllers', [])
             }, options);
         
         } else {
+
+            var mm = $scope.data.birthday.getMonth() + 1; // getMonth() is zero-based
+            var dd = $scope.data.birthday.getDate();
+            var datestr = $scope.data.birthday.getFullYear() + "-" + pad(mm,2) + "-" + pad(dd,2);
+
             $http({
-                method: 'GET',
+                method: 'POST',
                 url: url_base + 'put_user_update.php',
                 data: {
                     'id': $scope.session.id,
                     'name': $scope.session.name,
                     'gender': $scope.session.gender,
-                    'birthday': $scope.session.birthday
+                    'birthday': datestr
                 },
             }).then(function successCallback(response) {
+                $scope.session.birthday = response.data;
+             //   $scope.data.birthday = new Date($scope.sedatassion.birthday);
                 var alertPopup = $ionicPopup.alert({
                     title: 'Profile Updated!',
                     template: 'Profile Update!'
@@ -323,6 +356,20 @@ angular.module('starter.controllers', [])
 
             });
         }
+    }
+
+    $scope.userwall = function (row) {
+        console.log(row)
+        Session.select_friend(row.id, 'id');
+        var username = row.name.slice(-1);
+        if (username == "s") {
+            username = row.name + "'";
+        } else {
+            username = row.name + "'s";
+        }
+        Session.select_friend(username, 'name');
+
+        $state.go('app.userwall');
     }
 })
 
@@ -345,7 +392,7 @@ angular.module('starter.controllers', [])
     });
 })
 
-.controller('FriendCtrl', function ($scope, $http, store, $ionicPopup, Session) {
+.controller('FriendCtrl', function ($scope, $http, store, $ionicPopup, Session, $state) {
     var url_base = store.get('url_base');
     //$scope.session = store.get('session');
     $scope.session = Session.value;
@@ -362,6 +409,20 @@ angular.module('starter.controllers', [])
     }, function errorCallback(response) {
 
     });
+
+    $scope.userwall = function (row) {
+        console.log(row)
+        Session.select_friend(row.id, 'id');
+        var username = row.name.slice(-1);
+        if (username == "s") {
+            username = row.name + "'";
+        } else {
+            username = row.name + "'s";
+        }
+        Session.select_friend(username, 'name');
+
+        $state.go('app.userwall');
+    }
 })
 
 .controller('SearchNewFriendCtrl', function ($scope, $http, store, $ionicPopup, Session) {
@@ -842,10 +903,6 @@ angular.module('starter.controllers', [])
     }).then(function successCallback(response) {
         if (response.data !== "null") {
             $scope.list = response.data;
-            angular.forEach($scope.list, function (value, key) {
-                value.likes = 0;
-                value.comments = 0;
-            });
         }
     }, function errorCallback(response) {
 
@@ -869,7 +926,7 @@ angular.module('starter.controllers', [])
                         'post_id': row.id
                     },
                 }).then(function successCallback(response) {
-                    row.likes += 1;
+                    row.likes = parseInt(row.likes) + 1;
                 }, function errorCallback(response) {
 
                 });
@@ -883,9 +940,79 @@ angular.module('starter.controllers', [])
                     },
                 }).then(function successCallback(response) {
                     if (response.data !== "-")
-                        row.likes += 1;
+                        row.likes = parseInt(row.likes) + 1;
                     else
-                        row.likes -= 1;
+                        row.likes = parseInt(row.likes) - 1;
+                }, function errorCallback(response) {
+
+                });
+            }
+        }, function errorCallback(response) {
+
+        });
+    }
+})
+
+.controller('UserWallCtrl', function ($scope, auth, store, $state, $http, Session, $stateParams) {
+
+    var url_base = store.get('url_base');
+    var session = store.get('session');
+    //$scope.session = store.get('session');
+    $scope.session = Session.value;
+    $scope.user = Session.friend;
+    console.log($scope.user);
+    $scope.list = [];
+    //console.log($scope.groupid);
+    $http({
+        method: 'GET',
+        url: url_base + 'get_user_posts.php',
+        params: {
+            'user_id': $scope.user.id
+        },
+    }).then(function successCallback(response) {
+        
+        if (response.data !== "null") {
+            $scope.list = response.data;
+        }
+    }, function errorCallback(response) {
+
+    });
+
+    $scope.toggleLike = function (row) {
+        $http({
+            method: 'GET',
+            url: url_base + 'get_like_user.php',
+            params: {
+                'user_id': session.id,
+                'post_id': row.id
+            },
+        }).then(function successCallback(response) {
+            if (response.data === "null") {
+                $http({
+                    method: 'POST',
+                    url: url_base + 'post_add_like.php',
+                    data: {
+                        'user_id': session.id,
+                        'post_id': row.id
+                    },
+                }).then(function successCallback(response) {
+                    row.likes = parseInt(row.likes) + 1;
+                }, function errorCallback(response) {
+
+                });
+            } else {
+                $http({
+                    method: 'POST',
+                    url: url_base + 'put_toggle_like.php',
+                    data: {
+                        'user_id': session.id,
+                        'post_id': row.id
+                    },
+                }).then(function successCallback(response) {
+                    if (response.data !== "-")
+                        row.likes = parseInt(row.likes) + 1;
+                    else
+                        row.likes = parseInt(row.likes) - 1;
                 }, function errorCallback(response) {
 
                 });
